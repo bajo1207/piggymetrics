@@ -15,8 +15,9 @@ before_install:
   - export PATH=$PATH:$HOME/.local/bin
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - bash <($(aws ecr get-login --no-include-email))
   - bash <(aws configure set default.region ${EB_REGION})
+  - bash <($(aws ecr get-login --no-include-email))
+
   #TAG
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 

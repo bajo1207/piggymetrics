@@ -22,8 +22,8 @@ after_success:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 
   # CONFIG SERVICE
-  - docker build -t piggypp/config ./config
-  - docker tag piggypp/config:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${EB_REGION}.amazonaws.com/piggypp:latest
+  - docker build -t piggypp ./config
+  - docker tag piggypp:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${EB_REGION}.amazonaws.com/piggypp:latest
   - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${EB_REGION}.amazonaws.com/piggypp:latest
 
 

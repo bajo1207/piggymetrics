@@ -12,7 +12,6 @@ env:
     - COMMIT=${TRAVIS_COMMIT::7}
 before_install:
   - pip install awscli
-  - export PATH=$PATH:$HOME/.local/bin
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

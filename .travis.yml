@@ -24,59 +24,60 @@ after_success:
   # CONFIG SERVICE
   - export CONFIG=piggypp/piggymetrics-config
   - docker build -t $CONFIG:$COMMIT ./config
-  - docker tag $CONFIG:$COMMIT $CONFIG:$TAG
-  - docker push $CONFIG
+  - docker tag $CONFIG $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
+  - docker push $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
+
 
   # REGISTRY
   - export REGISTRY=piggypp/piggymetrics-registry
   - docker build -t $REGISTRY:$COMMIT ./registry
-  - docker tag $REGISTRY:$COMMIT $REGISTRY:$TAG
-  - docker push $REGISTRY
+  - docker tag $REGISTRY $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
+  - docker push $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
 
   # GATEWAY
   - export GATEWAY=piggypp/piggymetrics-gateway
   - docker build -t $GATEWAY:$COMMIT ./gateway
-  - docker tag $GATEWAY:$COMMIT $GATEWAY:$TAG
-  - docker push $GATEWAY
+  - docker tag $GATEWAY $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
+  - docker push $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
 
   # AUTH SERVICE
   - export AUTH_SERVICE=piggypp/piggymetrics-auth-service
   - docker build -t $AUTH_SERVICE:$COMMIT ./auth-service
-  - docker tag $AUTH_SERVICE:$COMMIT $AUTH_SERVICE:$TAG
-  - docker push $AUTH_SERVICE
+  - docker tag $AUTH_SERVICE $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
+  - docker push $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
 
   # ACCOUNT SERVICE
   - export ACCOUNT_SERVICE=piggypp/piggymetrics-account-service
   - docker build -t $ACCOUNT_SERVICE:$COMMIT ./account-service
-  - docker tag $ACCOUNT_SERVICE:$COMMIT $ACCOUNT_SERVICE:$TAG
-  - docker push $ACCOUNT_SERVICE
+  - docker tag $ACCOUNT_SERVICE $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
+  - docker push $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
 
   # STATISTICS SERVICE
   - export STATISTICS_SERVICE=piggypp/piggymetrics-statistics-service
   - docker build -t $STATISTICS_SERVICE:$COMMIT ./statistics-service
-  - docker tag $STATISTICS_SERVICE:$COMMIT $STATISTICS_SERVICE:$TAG
-  - docker push $STATISTICS_SERVICE
+  - docker tag $STATISTICS_SERVICE $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
+  - docker push $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
 
   # NOTIFICATION_SERVICE
   - export NOTIFICATION_SERVICE=piggypp/piggymetrics-notification-service
   - docker build -t $NOTIFICATION_SERVICE:$COMMIT ./notification-service
-  - docker tag $NOTIFICATION_SERVICE:$COMMIT $NOTIFICATION_SERVICE:$TAG
-  - docker push $NOTIFICATION_SERVICE
+  - docker tag $NOTIFICATION_SERVICE $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
+  - docker push $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
 
   # MONITORING
   - export MONITORING=piggypp/piggymetrics-monitoring
   - docker build -t $MONITORING:$COMMIT ./monitoring
-  - docker tag $MONITORING:$COMMIT $MONITORING:$TAG
-  - docker push $MONITORING
+  - docker tag $MONITORING $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
+  - docker push $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
 
   # TURBINE STREAM SERVICE
   - export TURBINE=piggypp/piggymetrics-turbine-stream-service
   - docker build -t $TURBINE:$COMMIT ./turbine-stream-service
-  - docker tag $TURBINE:$COMMIT $TURBINE:$TAG
-  - docker push $TURBINE
+  - docker tag $TURBINE $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
+  - docker push $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
 
   # MONGO DB
   - export MONGO_DB=piggypp/piggymetrics-mongodb
   - docker build -t $MONGO_DB:$COMMIT ./mongodb
-  - docker tag $MONGO_DB:$COMMIT $MONGO_DB:$TAG
-  - docker push $MONGO_DB
+  - docker tag $MONGO_DB $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG
+  - docker push $AWS_ACCOUNT_ID.dkr.ecr.$EB_REGION.amazonaws.com/piggypp:$TAG

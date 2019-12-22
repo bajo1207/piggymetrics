@@ -4,6 +4,7 @@
 ![GitHub issues](https://img.shields.io/github/issues/bajo1207/piggymetrics)
 ![GitHub repo size](https://img.shields.io/github/repo-size/bajo1207/piggymetrics)
 [![Join the chat at https://gitter.im/sqshq/PiggyMetrics](https://badges.gitter.im/sqshq/PiggyMetrics.svg)](https://gitter.im/sqshq/PiggyMetrics?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+![WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png "This work is licensed under the WTFPL")
 
 # Piggy Metrics
 *Disclaimer: This is a student project in progress*

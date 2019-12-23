@@ -2,7 +2,7 @@
 [![codecov.io](https://codecov.io/github/sqshq/PiggyMetrics/coverage.svg?branch=master)](https://codecov.io/github/sqshq/PiggyMetrics?branch=master)
 ![GitHub issues](https://img.shields.io/github/issues/bajo1207/piggymetrics)
 ![GitHub repo size](https://img.shields.io/github/repo-size/bajo1207/piggymetrics)
-[![Join the chat at https://gitter.im/sqshq/PiggyMetrics](https://badges.gitter.im/sqshq/PiggyMetrics.svg)](https://gitter.im/sqshq/PiggyMetrics?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Chat with us on Discord](https://img.shields.io/static/v1?label=&%20us&message=Chat%20with%20us%20on%20Discord&logo=discord&color=gray)](https://discord.gg/8PNmJeS)
 ![WTFPL License](https://img.shields.io/badge/License-WTFPL-green "This work is licensed under the WTFPL")
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbajo1207%2Fpiggymetrics.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbajo1207%2Fpiggymetrics?ref=badge_shield)
 

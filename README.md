@@ -10,6 +10,7 @@
 
 # Piggy Metrics
 *Disclaimer: This is a student project in progress*
+
 Our goal is to get a better understanding of microservice programming and implement a new service into piggymetrics, which allows users to login with their paypal account and track transactions made via paypal in der piggymetrics history.
 
 **A simple way to deal with personal finances**

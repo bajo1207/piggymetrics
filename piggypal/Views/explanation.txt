@@ -1,0 +1,3 @@
+Anything related to visual representation goes here.
+layout.html should only be used for site initialisation.
+Sub modules go into their respective folders.

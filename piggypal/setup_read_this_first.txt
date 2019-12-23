@@ -1,0 +1,7 @@
+Before running the application in dev mode please run the following lines in your virtual environment:
+
+pip install cherrypy
+pip install jinja2
+
+Then type:
+python Run.py

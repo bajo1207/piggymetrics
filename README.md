@@ -7,10 +7,10 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbajo1207%2Fpiggymetrics.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbajo1207%2Fpiggymetrics?ref=badge_shield)
 
 ![Disclaimer](https://img.shields.io/badge/Disclaimer-This%20is%20a%20student%20project%20in%20progress-red)
-Our goal is to get a better understanding of microservice programming and implement a new service into piggymetrics, which allows users to login with their paypal account and track transactions made via paypal in der piggymetrics history.
 
 # Piggy Metrics
 *Disclaimer: This is a student project in progress*
+Our goal is to get a better understanding of microservice programming and implement a new service into piggymetrics, which allows users to login with their paypal account and track transactions made via paypal in der piggymetrics history.
 
 **A simple way to deal with personal finances**
 

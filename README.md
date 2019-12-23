@@ -4,6 +4,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/bajo1207/piggymetrics)
 [![Join the chat at https://gitter.im/sqshq/PiggyMetrics](https://badges.gitter.im/sqshq/PiggyMetrics.svg)](https://gitter.im/sqshq/PiggyMetrics?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ![WTFPL License](https://img.shields.io/badge/License-WTFPL-green "This work is licensed under the WTFPL")
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbajo1207%2Fpiggymetrics.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbajo1207%2Fpiggymetrics?ref=badge_shield)
 
 ![Disclaimer](https://img.shields.io/badge/Disclaimer-This%20is%20a%20student%20project%20in%20progress-red)
 

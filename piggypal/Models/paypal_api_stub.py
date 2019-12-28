@@ -11,6 +11,8 @@ sandbox_transaction_url = "https://api.sandbox.paypal.com/v1/reporting/transacti
 #Internet Date/Time Format
 dt_pattern = re.compile("^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])[T,t]([0-1][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)([.][0-9]+)?([Zz]|[+-][0-9]{2}:[0-9]{2})$")
 
+
+@cherrypy.expose
 class Paypal_stub(object):
     """
     A stub class to communicate with the PayPal OAuth2 API as if it was a simple non-remote RESTful database
@@ -32,7 +34,6 @@ class Paypal_stub(object):
         """
         # TODO: once the app goes live, this function should lead to the Paypal Auth screen
         # ! Have Privacy in Mind
-        
         return sandbox_client_id, sandbox_client_secret
 
     def _getOauthToken(self, client_id, client_secret) -> dict:
@@ -48,16 +49,22 @@ class Paypal_stub(object):
             client_secret=client_secret
         )
         return token
-
-    # TODO: Expose the right way (RESTful) 
-    @cherrypy.expose
-    def getTransactionHistory(self, start_date:'Internet Date/Time Format', end_date:'Internet Date/Time Format', **request_kwargs:dict) -> dict:
+ 
+    @cherrypy.tools.json_in()
+    #@cherrypy.tools.json_out()
+    @cherrypy.tools.accept(media='text/plain')
+    def GET(self, start_date:'Internet Date/Time Format', end_date:'Internet Date/Time Format', **request_kwargs:dict) -> dict:
         """
         Fetches Transaction History from PayPal API via OAuth2 communication
 
         - `start_date` and `end_date` should be provided in Internet Date/Time Format (https://tools.ietf.org/html/rfc3339#section-5.6)
         - Fine-tuning in requests can be done via options specified in https://developer.paypal.com/docs/api/sync/v1/.
         """
+        if not (start_date and end_date):
+            data = cherrypy.request.json
+            start_date = data["start-date"]
+            end_date = data["end_date"]
+
         if not (dt_pattern.match(start_date) and dt_pattern.match(end_date)):
             raise ValueError("start_date or end_date are not in the right format.")
         try:
@@ -67,17 +74,30 @@ class Paypal_stub(object):
             self._token = self._getOauthToken(self._client_id, self._client_secret)
             client = OAuth2Session(client_id=self._client_id, token=self._token)
             response = client.get(self.transaction_url, **request_kwargs)
+        #TODO format response as JSON
         return response
         
 
-    # TODO
+    # TODO Define automatic Token refresh & update
+    # TODO Then update getTransactionHistory(...) and omit try...except...
+    # # (https://requests-oauthlib.readthedocs.io/en/latest/oauth2_workflow.html#third-recommended-define-automatic-token-refresh-and-update)
     def _refreshToken(self):
         pass
 
-if __name__ == '__main__':
-   #cherrypy.quickstart(Paypal_stub(), '/')
-   stub = Paypal_stub()
-   print("Token: " + str(stub._token))
-   history = stub.getTransactionHistory(start_date="2019-12-01t00:00:01.0+00:00", end_date="2019-12-24t00:00:01.0-23:00")
-   print("History type: " + str(type(history)),
-   "History content: " + str(history.json()))
+if __name__ == '__main__': # pragma: no cover
+    conf = {
+        '/': {
+            'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
+            #'tools.sessions.on': True,
+            'tools.response_headers.on': True,
+            'tools.response_headers.headers': [('Content-Type', 'text/plain')],
+        }
+    }
+    cherrypy.quickstart(Paypal_stub(), '/', conf)
+    """
+    stub = Paypal_stub()
+    print("Token: " + str(stub._token))
+    history = stub.getTransactionHistory(start_date="2019-12-01t00:00:01.0+00:00", end_date="2019-12-24t00:00:01.0-23:00")
+    print("History type: " + str(type(history)),
+    "History content: " + str(history.json()))
+    """

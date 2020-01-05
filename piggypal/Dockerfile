@@ -1,6 +1,6 @@
 FROM python:3
 
-ADD ./src/Run.py
+ADD ./src/Run.py /
 
 RUN pip install cherrypy
 RUN pip install jinja2

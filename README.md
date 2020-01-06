@@ -26,19 +26,13 @@ Performs calculations on major statistics parameters and captures time series fo
 Stores users contact information and notification settings (like remind and backup frequency). Scheduled worker collects required information from other services and sends e-mail messages to subscribed customers.
 
 
-### User Authorization
-A user can choose to use the PiggyMetrics Authorization Service or to create a PiggyPal account, which couples PiggyMetrics with PayPal.
+## PiggyPay
+This is our new Microservice. It offers the user PayPal Integration. Users can register and login to their account and see their PayPal transaction history. A user can choose to use the PiggyMetrics Authorization Service or to create a PiggyPal account, which couples PiggyMetrics with PayPal.
 
-#### Auth service
-Authorization responsibilities are completely extracted to separate server, which grants [OAuth2 tokens](https://tools.ietf.org/html/rfc6749) for the backend resource services. Auth Server is used for user authorization as well as for secure machine-to-machine communication inside a perimeter.
-
-#### PiggyPay
-This is our new Microservice. It offers the user PayPal Integration. Users can register and login to their account and see their PayPal transaction history. 
 TODO
 
 #### Notes
 Our Microservice will communicate with the Statistics SService and the Account Service to integrate Paypal support.
-
 
 ## Security
 

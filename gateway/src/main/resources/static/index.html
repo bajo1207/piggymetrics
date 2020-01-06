@@ -424,10 +424,29 @@
                             </form>
                         </div>
                     </div>
-                    <div>
-                        <iframe src="localhost:4710/piggypal-login'"></iframe>
-                    </div>
                     <div class="fliptext">Or <a href="#">create new account</a></div>
+                    <div id="plustext">
+                        Login with PayPal
+                        <script src='https://www.paypalobjects.com/js/external/connect/api.js'></script>
+                        <script>
+                        paypal.use( ['login'], function (login) {
+                            login.render ({
+                            "appid":"AcMTMpvdMv1KMcweEIO_-KXrs4Y7AkHduqkf6r6u_e6-juZ1ZUxiP3QZIGp99zWba09_2AcihuENUgAR",
+                            "authend":"sandbox",
+                            "scopes":"openid",
+                            "containerid":"cwppButton",
+                            "responseType":"code",
+                            "locale":"de-de",
+                            "buttonType":"CWP",
+                            "buttonShape":"pill",
+                            "buttonSize":"lg",
+                            "fullPage":"true",
+                            /*TODO: replace return URL*/
+                            "returnurl":"https://devtools-paypal.com"
+                            });
+                        });
+                        </script>
+                    </div>
                 </div>
 
                 <div class="BACKCARD">

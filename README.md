@@ -61,37 +61,13 @@ Our Microservice will communicate with the Statistics SService and the Account S
 ### Auth service
 Authorization responsibilities are completely extracted to separate server, which grants [OAuth2 tokens](https://tools.ietf.org/html/rfc6749) for the backend resource services. Auth Server is used for user authorization as well as for secure machine-to-machine communication inside a perimeter.
 
-
-### API Gateway
-As you can see, there are three core services, which expose external API to client. In a real-world systems, this number can grow very quickly as well as whole system complexity. Actually, hundreds of services might be involved in rendering of one complex webpage.
-
-In theory, a client could make requests to each of the microservices directly. But obviously, there are challenges and limitations with this option, like necessity to know all endpoints addresses, perform http request for each piece of information separately, merge the result on a client side. Another problem is non web-friendly protocols which might be used on the backend.
-
-Usually a much better approach is to use API Gateway. It is a single entry point into the system, used to handle requests by routing them to the appropriate backend service or by invoking multiple backend services and [aggregating the results](http://techblog.netflix.com/2013/01/optimizing-netflix-api.html). Also, it can be used for authentication, insights, stress and canary testing, service migration, static response handling, active traffic management.
-
-### Service discovery
-
-Another commonly known architecture pattern is Service discovery. It allows automatic detection of network locations for service instances, which could have dynamically assigned addresses because of auto-scaling, failures and upgrades.
-
-The key part of Service discovery is Registry. I use Netflix Eureka in this project. Eureka is a good example of the client-side discovery pattern, when client is responsible for determining locations of available service instances (using Registry server) and load balancing requests across them.
-
-With Spring Boot, you can easily build Eureka Registry with `spring-cloud-starter-eureka-server` dependency, `@EnableEurekaServer` annotation and simple configuration properties.
-
-Client support enabled with `@EnableDiscoveryClient` annotation an `bootstrap.yml` with application name:
-``` yml
-spring:
-  application:
-    name: notification-service
-```
-
-Now, on application startup, it will register with Eureka Server and provide meta-data, such as host and port, health indicator URL, home page etc. Eureka receives heartbeat messages from each instance belonging to a service. If the heartbeat fails over a configurable timetable, the instance will be removed from the registry.
-
-Also, Eureka provides a simple interface, where you can track running services and a number of available instances: `http://localhost:8761`
-
+### PiggyPay
+This is our new Microservice. It offers the user PayPal Integration. Users can register and login to their account and see their PayPal transaction history. 
+TODO
 
 ## Security
 
-An advanced security configuration is beyond the scope of this proof-of-concept project. For a more realistic simulation of a real system, consider to use https, JCE keystore to encrypt Microservices passwords and Config server properties content (see [documentation](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_security) for details).
+An advanced security configuration is beyond the scope of this proof-of-concept project.
 
 ## Infrastructure automation
 
@@ -103,13 +79,13 @@ Deploying microservices, with their interdependence, is much more complex proces
 
 Here is a simple Continuous Delivery workflow, implemented in this project:
 
-<img width="880" src="https://cloud.githubusercontent.com/assets/6069066/14159789/0dd7a7ce-f6e9-11e5-9fbb-a7fe0f4431e3.png">
+TODO
 
-In this [configuration](https://github.com/sqshq/PiggyMetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push. So, there are always `latest` image for each microservice on [Docker Hub](https://hub.docker.com/r/sqshq/) and older images, tagged with git commit hash. It's easy to deploy any of them and quickly rollback, if needed.
+In this [configuration](https://github.com/bajo1207/piggymetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push. So, there are always `latest` image for each microservice on TODO and older images, tagged with TODO. It's easy to deploy any of them and quickly rollback, if needed.
 
 ## How to run all the things?
 
-Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDB instances and RabbitMq. Make sure you have `4 Gb` RAM available on your machine. You can always run just vital services though: Gateway, Registry, Config, Auth Service and Account Service.
+Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDB instances, 1 Python application and RabbitMq. Make sure you have `4 Gb` RAM available on your machine. You can always run just vital services though: Gateway, Registry, Config, Auth Service, Account Service and PiggyPal.
 
 #### Before you start
 - Install Docker and Docker Compose.

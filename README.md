@@ -9,13 +9,12 @@
 ![Disclaimer](https://img.shields.io/badge/Disclaimer-This%20is%20a%20student%20project%20in%20progress-red)
 
 # PayPal Integration for Piggy Metrics
-*Disclaimer: This is a student project in progress*
 
 Our goal is to get a better understanding of microservice programming and implement a new service into piggymetrics, which allows users to login with their paypal account and track transactions made via paypal in their piggymetrics history.
 
 ## Functional services
 
-PiggyMetrics was decomposed into three core microservices. All of them are independently deployable applications, organized around certain business domains.
+PiggyMetrics was decomposed into three core microservices. All of them are independently deployable applications, organized around certain business domains. In this project we added a microservice that interacts with these core services to add PayPal Integration to PiggyMetrics.
 
 ### Account service
 Contains general user input logic and validation: incomes/expenses items, savings and account settings.
@@ -26,15 +25,20 @@ Performs calculations on major statistics parameters and captures time series fo
 ### Notification service
 Stores users contact information and notification settings (like remind and backup frequency). Scheduled worker collects required information from other services and sends e-mail messages to subscribed customers.
 
-### Auth service
+
+### User Authorization
+A user can choose to use the PiggyMetrics Authorization Service or to create a PiggyPal account, which couples PiggyMetrics with PayPal.
+
+#### Auth service
 Authorization responsibilities are completely extracted to separate server, which grants [OAuth2 tokens](https://tools.ietf.org/html/rfc6749) for the backend resource services. Auth Server is used for user authorization as well as for secure machine-to-machine communication inside a perimeter.
 
-### PiggyPay
+#### PiggyPay
 This is our new Microservice. It offers the user PayPal Integration. Users can register and login to their account and see their PayPal transaction history. 
 TODO
 
 #### Notes
 Our Microservice will communicate with the Statistics SService and the Account Service to integrate Paypal support.
+
 
 ## Security
 

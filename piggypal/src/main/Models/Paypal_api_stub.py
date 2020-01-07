@@ -81,6 +81,14 @@ class Paypal_stub(object):
         - Fine-tuning in requests can be done via options specified in https://developer.paypal.com/docs/api/sync/v1/.
         """
 
+        if not (start_date and end_date):
+            data = cherrypy.request.json
+            start_date = data["start-date"]
+            end_date = data["end_date"]
+
+        if not (dt_pattern.match(start_date) and dt_pattern.match(end_date)):
+            raise ValueError("start_date or end_date are not in the right format.")
+
         if not self._token["access_token"]:
             self._token = self._getAuthorization()
 
@@ -92,7 +100,7 @@ class Paypal_stub(object):
             token_updater=self.token_saver
         )
         
-        response = client.get(self.transaction_url, params={"page":1, **request_kwargs})
+        response = client.get(self.transaction_url, params={"start_date":start_date, "end_date":end_date, **request_kwargs})
         return response.json()    
 
 if __name__ == '__main__': # pragma: no cover

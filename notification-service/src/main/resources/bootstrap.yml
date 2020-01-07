@@ -3,7 +3,7 @@ spring:
     name: notification-service
   cloud:
     config:
-      uri: http://config.local:8888
+      uri: http://172.31.34.93:8888
       fail-fast: true
       password: ${CONFIG_SERVICE_PASSWORD}
       username: user

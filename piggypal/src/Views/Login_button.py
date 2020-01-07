@@ -2,5 +2,5 @@ import cherrypy
 
 class Login_button(object):
     @cherrypy.expose
-    def GET(self):
+    def index(self):
         return open('Views/login.html')

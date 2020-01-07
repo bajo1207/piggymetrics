@@ -92,7 +92,7 @@ class Paypal_stub(object):
             token_updater=self.token_saver
         )
         
-        response = client.get(self.transaction_url, params={"page"=1, **request_kwargs})
+        response = client.get(self.transaction_url, params={"page":1, **request_kwargs})
         return response.json()    
 
 if __name__ == '__main__': # pragma: no cover

@@ -13,7 +13,7 @@ services:
   config:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-config
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-config:latest
     restart: always
     logging:
       options:
@@ -23,7 +23,7 @@ services:
   registry:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-registry
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-registry:latest
     restart: always
     depends_on:
       config:
@@ -38,7 +38,7 @@ services:
   gateway:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-gateway
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-gateway:latest
     restart: always
     depends_on:
       config:
@@ -57,7 +57,7 @@ services:
       STATISTICS_SERVICE_PASSWORD: $STATISTICS_SERVICE_PASSWORD
       ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    image: sqshq/piggymetrics-auth-service
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-auth-service:latest
     restart: always
     depends_on:
       config:
@@ -70,7 +70,7 @@ services:
   auth-mongodb:
     environment:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    image: sqshq/piggymetrics-mongodb
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-mongodb:latest
     restart: always
     logging:
       options:
@@ -82,7 +82,7 @@ services:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    image: sqshq/piggymetrics-account-service
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-account-service:latest
     restart: always
     depends_on:
       config:
@@ -96,7 +96,7 @@ services:
     environment:
       INIT_DUMP: account-service-dump.js
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    image: sqshq/piggymetrics-mongodb
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-mongodb:latest
     restart: always
     logging:
       options:
@@ -108,7 +108,7 @@ services:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
       STATISTICS_SERVICE_PASSWORD: $STATISTICS_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-statistics-service
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-statistics-service:latest
     restart: always
     depends_on:
       config:
@@ -121,7 +121,7 @@ services:
   statistics-mongodb:
     environment:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    image: sqshq/piggymetrics-mongodb
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-mongodb:latest
     restart: always
     logging:
       options:
@@ -133,7 +133,7 @@ services:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
       NOTIFICATION_SERVICE_PASSWORD: $NOTIFICATION_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-notification-service
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-notification-service:latest
     restart: always
     depends_on:
       config:
@@ -144,7 +144,7 @@ services:
         max-file: "10"
 
   notification-mongodb:
-    image: sqshq/piggymetrics-mongodb
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-mongodb:latest
     restart: always
     environment:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
@@ -156,7 +156,7 @@ services:
   monitoring:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-monitoring
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-monitoring:latest
     restart: always
     depends_on:
       config:
@@ -171,13 +171,26 @@ services:
   turbine-stream-service:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-turbine-stream-service
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-turbine-stream-service:latest
     restart: always
     depends_on:
       config:
         condition: service_healthy
     ports:
-    - 8989:8989
+      - 8989:8989
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  piggypal:
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-piggypal:latest
+    restart: always
+    depends_on:
+      config:
+        condition: service_healthy
+    ports:
+      - 4711:4710
     logging:
       options:
         max-size: "10m"

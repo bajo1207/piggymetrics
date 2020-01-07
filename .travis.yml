@@ -84,3 +84,8 @@ after_success:
   - docker tag $MONGO_DB:$COMMIT $AWS_URL/$MONGO_DB:$TAG
   - docker push $AWS_URL/$MONGO_DB
 
+  # PIGGYPAL
+  - export PIGGYPAL=piggymetrics-piggypal
+  - docker build -t $PIGGYPAL:$COMMIT ./piggypal
+  - docker tag $PIGGYPAL:$COMMIT $AWS_URL/$PIGGYPAL:$TAG
+  - docker push $AWS_URL/$PIGGYPAL

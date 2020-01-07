@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/bajo1207/piggymetrics.svg?branch=master)](https://travis-ci.org/bajo1207/piggymetrics)
-[![codecov.io](https://codecov.io/github/sqshq/PiggyMetrics/coverage.svg?branch=master)](https://codecov.io/github/sqshq/PiggyMetrics?branch=master)
 ![GitHub issues](https://img.shields.io/github/issues/bajo1207/piggymetrics)
 ![GitHub repo size](https://img.shields.io/github/repo-size/bajo1207/piggymetrics)
 [![Chat with us on Discord](https://img.shields.io/static/v1?label=&%20us&message=Chat%20with%20us%20on%20Discord&logo=discord&color=gray)](https://discord.gg/8PNmJeS)

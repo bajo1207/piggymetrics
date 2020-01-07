@@ -1,0 +1,25 @@
+<div id="plustext" style="text-align: center; width:300; height: 50px;">
+    <span id='cwppButton'></span>
+    <script src='https://www.paypalobjects.com/js/external/connect/api.js'></script>
+    <script>
+        document.addEventListener('click', function (event) {
+            parent.postMessage("redirecting.." , "*")
+        }, false);
+        paypal.use(['login'], function (login) {
+            login.render({
+                "appid": "AcMTMpvdMv1KMcweEIO_-KXrs4Y7AkHduqkf6r6u_e6-juZ1ZUxiP3QZIGp99zWba09_2AcihuENUgAR",
+                "authend": "sandbox",
+                "scopes": "openid",
+                "containerid": "cwppButton",
+                "responseType": "code",
+                "locale": "de-de",
+                "buttonType": "CWP",
+                "buttonShape": "pill",
+                "buttonSize": "lg",
+                "fullPage": "true",
+                /*TODO: replace return URL*/
+                "returnurl": "https://devtools-paypal.com"
+            });
+        });
+    </script>
+</div>

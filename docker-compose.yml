@@ -38,7 +38,7 @@ services:
   gateway:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: gateway-latest
+    image: gateway:latest
     restart: always
     depends_on:
       config:

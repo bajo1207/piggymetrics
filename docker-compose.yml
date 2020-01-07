@@ -182,3 +182,14 @@ services:
       options:
         max-size: "10m"
         max-file: "10"
+
+  piggypal:
+    image: ${AWS_USER}.dkr.ecr.us-east-1.amazonaws.com/piggymetrics-piggypal:latest
+    restart: always
+    depends_on:
+      config:
+        condition: service_healthy
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"

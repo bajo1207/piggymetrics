@@ -2,6 +2,7 @@ import cherrypy, requests, re
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 from requests.auth import HTTPBasicAuth
+import datetime
 
 #Fixed Sandbox variables -> have to be separately obtained by live application for each user
 sandbox_client_id = "AcMTMpvdMv1KMcweEIO_-KXrs4Y7AkHduqkf6r6u_e6-juZ1ZUxiP3QZIGp99zWba09_2AcihuENUgAR"
@@ -20,13 +21,16 @@ class Paypal_cred_listener(object):
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.accept(media='text/plain')
-    def GET(self, code, scope, **kwargs):
+    def GET(self, code:str, scope:str, **kwargs:{str}):
+        """
+        Receives the authorization code and the scope provided by the Paypal ReturnURL functionality from the "connect with paypal"-workflow
+        """
         self._auth_code = code
 
     @cherrypy.tools.accept(media='text/plain')
     def DELETE(self):
         """
-        Returns the current Authorization and erases confidential info from variables there-after
+        Returns the current Authorization code and erases confidential info from local variables there-after
         """
         _auth_code = self._auth_code
         del self._auth_code
@@ -54,10 +58,10 @@ class Paypal_stub(object):
         self._client_id = sandbox_client_id # TODO: change when going live
         self._client_secret = sandbox_client_secret # TODO: see above
         
-    def token_saver(self, token):
+    def _token_saver(self, token):
         self._token = token
 
-    def _getAuthorization(self) -> str:
+    def getAuthorization(self) -> str:
         """
         Returns User Authorization from Piggypal Credential Listener
         
@@ -73,34 +77,33 @@ class Paypal_stub(object):
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     @cherrypy.tools.accept(media='text/plain')
-    def GET(self, start_date:'Internet Date/Time Format', end_date:'Internet Date/Time Format', **request_kwargs:dict) -> dict:
+    def GET(self, start_date:'Internet Date/Time Format'=None, end_date:'Internet Date/Time Format'=None, **request_kwargs:dict) -> dict:
         """
-        Fetches Transaction History from PayPal API via OAuth2 communication
+        Fetches Transaction History or Current Account Balance from PayPal API via OAuth2 communication
 
         - `start_date` and `end_date` should be provided in Internet Date/Time Format (https://tools.ietf.org/html/rfc3339#section-5.6)
+        - if no dates are provided, the request will automatically be redirected to https://api.sandbox.paypal.com/v2/wallet/balance-accounts to fetch the current account balance.
         - Fine-tuning in requests can be done via options specified in https://developer.paypal.com/docs/api/sync/v1/.
         """
 
+        transaction_url = self.transaction_url
         if not (start_date and end_date):
-            data = cherrypy.request.json
-            start_date = data["start-date"]
-            end_date = data["end_date"]
-
-        if not (dt_pattern.match(start_date) and dt_pattern.match(end_date)):
+            transaction_url = "https://api.sandbox.paypal.com/v2/wallet/balance-accounts"
+        elif not (dt_pattern.match(start_date) and dt_pattern.match(end_date)):
             raise ValueError("start_date or end_date are not in the right format.")
 
         if not self._token["access_token"]:
-            self._token = self._getAuthorization()
+            self._token = self.getAuthorization()
 
         client = OAuth2Session(
             client_id=self._client_id,
             token=self._token,
             auto_refresh_url=self.token_url,
             auto_refresh_kwargs=self._extra_info,
-            token_updater=self.token_saver
+            token_updater=self._token_saver
         )
         
-        response = client.get(self.transaction_url, params={"start_date":start_date, "end_date":end_date, **request_kwargs})
+        response = client.get(transaction_url, params={"start_date":start_date, "end_date":end_date, **request_kwargs})
         return response.json()    
 
 if __name__ == '__main__': # pragma: no cover
@@ -109,4 +112,5 @@ if __name__ == '__main__': # pragma: no cover
     cherrypy.config.update('Configs/Server.conf')
     cherrypy.engine.start()
     #possible testing-request: curl -v -X GET "http://127.0.0.1:4710/piggypal?start_date=2019-12-01t00:00:01.0%2B00:00&end_date=2019-12-24t00:00:01.0-23:00"
+    # or omit the dates and get the current balance
     #Do not forget to inject the authorization code into piggypal-listens before you trigger /piggypal

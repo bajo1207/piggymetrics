@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 curl -s https://codecov.io/bash
 aws configure set default.region ${EB_REGION}
 eval $(aws ecr get-login --no-include-email)

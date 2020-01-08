@@ -16,5 +16,8 @@ before_install:
   - pip install --user awscli
   - export PATH=$PATH:$HOME/.local/bin
 
-after_success:
-  - bash ./deploy.sh
+deploy:
+    provider: script
+    script: bash deploy.sh
+    on:
+      all_branches: true

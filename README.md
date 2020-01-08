@@ -84,6 +84,9 @@ If you'd like to start applications in Intellij Idea you need to either use [Env
 - http://localhost:9000/hystrix - Hystrix Dashboard (Turbine stream link: `http://turbine-stream-service:8080/turbine/turbine.stream`)
 - http://localhost:15672 - RabbitMq management (default login/password: guest/guest)
 
+#### Piggypal User Workflow
+  TODO
+
 #### Notes
 All Spring Boot applications require already running [Config Server](https://github.com/sqshq/PiggyMetrics#config-service) for startup. But we can start all containers simultaneously because of `depends_on` docker-compose option.
 

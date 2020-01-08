@@ -54,7 +54,7 @@ class Paypal_stub(object):
         self._client_id = sandbox_client_id # TODO: change when going live
         self._client_secret = sandbox_client_secret # TODO: see above
         
-    def token_saver(self, token):
+    def tokenSaver(self, token):
         self._token = token
 
     def _getAuthorization(self) -> str:
@@ -97,7 +97,7 @@ class Paypal_stub(object):
             token=self._token,
             auto_refresh_url=self.token_url,
             auto_refresh_kwargs=self._extra_info,
-            token_updater=self.token_saver
+            token_updater=self.tokenSaver
         )
         
         response = client.get(self.transaction_url, params={"start_date":start_date, "end_date":end_date, **request_kwargs})

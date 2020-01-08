@@ -1,6 +1,10 @@
 sudo: required
 services:
   - docker
+env:
+  global:
+    - EB_REGION="us-east-1"
+    - COMMIT=${TRAVIS_COMMIT::7}
 jobs:
   include:
     - stage: Java
@@ -8,10 +12,6 @@ jobs:
       jdk: openjdk8
       cache: pip
 
-      env:
-        global:
-          - EB_REGION="us-east-1"
-          - COMMIT=${TRAVIS_COMMIT::7}
       before_install:
         - pip install --user awscli
         - export PATH=$PATH:$HOME/.local/bin

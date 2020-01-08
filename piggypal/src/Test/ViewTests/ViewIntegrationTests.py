@@ -1,12 +1,13 @@
-import cherrypy, sys, os
+import cherrypy, sys, os, requests
 from cherrypy.test import helper
-sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../.."))
-from src.main.Views.Login_button import Login_button as lb
 from contextlib import contextmanager
-import requests
+from src.main.Views.Login_button import Login_button as lb
 
 
 @contextmanager
+"""
+Starts cherrypy engine to run tests in proper environment
+"""
 def run_server():
     cherrypy.config.update({'global': {'server.socket_host': "127.0.0.1", 'server.socket_port': 4710}})
     cherrypy.tree.mount(lb(), "/", "")
@@ -23,7 +24,9 @@ def _setup():
 
 
 class ViewIntegrationTests(helper.CPWebCase):
-
+    """
+    Contains Tests for View
+    """
     def test_index(self):
         """
         Fails if request on "/" errors
@@ -43,6 +46,7 @@ class ViewIntegrationTests(helper.CPWebCase):
         with run_server():
             r = requests.get(url)
             print(r.content)
+            #"PiggyPal Button.html" contains HTML sourcecode extracted from Browser with activ NoScript 
             f = open("PiggyPal Button.html", "r")
             html = r.text
             content = f.read()

@@ -30,8 +30,15 @@ This is our new Microservice. It offers the user PayPal Integration. Users can r
 
 TODO
 
+Method	| Path	| Description	| User authenticated	| Available from UI
+------------- | ------------------------- | ------------- |:-------------:|:----------------:|
+GET     | /                   | Get Paypal Login Button         | |
+GET     | /piggypal           | Get Paypal Transaction History  | |
+GET     | /piggypal-listens   | | |
+DELETE  | /piggypal-listens   | Returns current Authorization and erases confidential Information | |
+
 #### Notes
-Our Microservice will communicate with the Statistics SService and the Account Service to integrate Paypal support.
+Our Microservice will communicate with the Statistics Service and the Account Service to integrate Paypal support.
 
 ## Security
 

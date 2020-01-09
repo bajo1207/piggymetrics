@@ -5,7 +5,6 @@ services:
 
 language: java
 jdk: openjdk8
-cache: pip
 
 env:
   global:
@@ -15,7 +14,8 @@ env:
 before_install:
   - pip install --user awscli
   - export PATH=$PATH:$HOME/.local/bin
-
+script:
+  - bash bash <(echo hello)
 deploy:
     provider: script
     script: bash deploy.sh

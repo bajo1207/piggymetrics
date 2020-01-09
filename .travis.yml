@@ -16,7 +16,7 @@ before_install:
   - export PATH=$PATH:$HOME/.local/bin
   - export BUILD="true"
 
-if: branch = master
+script: bash build.sh
 
 deploy:
     provider: script

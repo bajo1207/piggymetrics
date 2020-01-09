@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
 
-curl -s https://codecov.io/bash
-aws configure set default.region ${EB_REGION}
-eval $(aws ecr get-login --no-include-email)
-
   #TAG
 export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-
-  #URL
-export AWS_URL=${AWS_ACCOUNT_ID}.dkr.ecr.${EB_REGION}.amazonaws.com
 
   # CONFIG SERVICE
 export CONFIG=piggymetrics-config

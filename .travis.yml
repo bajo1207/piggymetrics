@@ -15,9 +15,13 @@ before_install:
   - pip install --user awscli
   - export PATH=$PATH:$HOME/.local/bin
 
-install: bash build.sh
-script: bash build.sh
-
+#install: bash build.sh
+#script: bash build.sh
+before_deploy:
+  - bash <(curl -s https://codecov.io/bash)
+  - bash <(aws configure set default.region ${EB_REGION})
+  - eval $(aws ecr get-login --no-include-email)
+  - export AWS_URL=${AWS_ACCOUNT_ID}.dkr.ecr.${EB_REGION}.amazonaws.com
 deploy:
     provider: script
     script: bash deploy.sh

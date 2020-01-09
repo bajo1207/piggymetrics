@@ -18,7 +18,7 @@ before_install:
   - export GREPPAL=$(git diff-tree --name-only --no-commit-id HEAD | grep piggypal)
 
 install: bash build.sh
-#script: bash test.sh
+script: bash test.sh
 
 before_deploy:
   - bash <(curl -s https://codecov.io/bash)
@@ -28,6 +28,7 @@ before_deploy:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 
 deploy:
+    skip_cleanup: true
     provider: script
     script: bash deploy.sh
     on:

@@ -1,4 +1,15 @@
 #!/usr/bin/env bash
+
+if [ "$GREPPAL" == "piggypal" ]
+then
+# PIGGYPAL
+export PIGGYPAL=piggymetrics-piggypal
+docker build -t $PIGGYPAL:$COMMIT ./piggypal
+docker tag $PIGGYPAL:$COMMIT $AWS_URL/$PIGGYPAL:$TAG
+docker push $AWS_URL/$PIGGYPAL
+fi
+if [ "$DIFFTREE" != "piggypal" ]
+then
   # CONFIG SERVICE
 export CONFIG=piggymetrics-config
 docker build -t $CONFIG:$COMMIT ./config
@@ -58,9 +69,5 @@ export MONGO_DB=piggymetrics-mongodb
 docker build -t $MONGO_DB:$COMMIT ./mongodb
 docker tag $MONGO_DB:$COMMIT $AWS_URL/$MONGO_DB:$TAG
 docker push $AWS_URL/$MONGO_DB
+fi
 
-  # PIGGYPAL
-export PIGGYPAL=piggymetrics-piggypal
-docker build -t $PIGGYPAL:$COMMIT ./piggypal
-docker tag $PIGGYPAL:$COMMIT $AWS_URL/$PIGGYPAL:$TAG
-docker push $AWS_URL/$PIGGYPAL

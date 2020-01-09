@@ -40,4 +40,4 @@ deploy:
     skip_cleanup: true
     local_dir: ./piggypal/src/main/Doc/main
     on:
-      all_branches: true
+      branch: Code-Documentation

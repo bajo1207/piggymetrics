@@ -14,6 +14,8 @@ env:
 before_install:
   - pip install --user awscli
   - export PATH=$PATH:$HOME/.local/bin
+  - export BUILDPIGGY=$()
+  - export BUILDPAL=$()
 
 #install: bash build.sh
 #script: bash build.sh

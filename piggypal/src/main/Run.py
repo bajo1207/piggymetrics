@@ -12,5 +12,6 @@ def start_server():
     cherrypy.engine.start()
     #cherrypy.engine.block()
 
+
 if __name__ == '__main__': # pragma: no cover
     start_server()

@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-
-  #TAG
-export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-
   # CONFIG SERVICE
 export CONFIG=piggymetrics-config
 docker build -t $CONFIG:$COMMIT ./config

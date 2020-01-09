@@ -16,7 +16,7 @@ before_install:
   - export PATH=$PATH:$HOME/.local/bin
   - export BUILD="true"
 
-script: bash build.sh
+install: bash build.sh
 
 deploy:
     provider: script

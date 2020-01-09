@@ -14,8 +14,10 @@ env:
 before_install:
   - pip install --user awscli
   - export PATH=$PATH:$HOME/.local/bin
-script:
-  - bash <(echo hello)
+  - export BUILD="true"
+
+if: env(BUILD) = "true"
+
 deploy:
     provider: script
     script: bash deploy.sh

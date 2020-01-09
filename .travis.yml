@@ -14,8 +14,8 @@ env:
 before_install:
   - pip install --user awscli
   - export PATH=$PATH:$HOME/.local/bin
-  - export DIFFTREE=$(git diff-tree --name-only --no-commit-id HEAD)
-  - export GREPPAL=$(git diff-tree --name-only --no-commit-id HEAD | grep piggypal)
+  - export DIFFTREE=$("git diff-tree --name-only --no-commit-id HEAD")
+  - export GREPPAL=$("git diff-tree --name-only --no-commit-id HEAD | grep piggypal")
 
 install: bash build.sh
 script: bash test.sh

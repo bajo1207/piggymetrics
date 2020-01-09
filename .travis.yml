@@ -17,8 +17,8 @@ before_install:
   - export BUILDPIGGY=$()
   - export BUILDPAL=$(git diff-tree --name-only --no-commit-id HEAD)
 
-#install: bash build.sh
-#script: bash build.sh
+install: bash build.sh
+script: bash build.sh
 before_deploy:
   - bash <(curl -s https://codecov.io/bash)
   - bash <(aws configure set default.region ${EB_REGION})

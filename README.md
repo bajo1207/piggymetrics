@@ -24,9 +24,8 @@ Performs calculations on major statistics parameters and captures time series fo
 ### Notification service
 Stores users contact information and notification settings (like remind and backup frequency). Scheduled worker collects required information from other services and sends e-mail messages to subscribed customers.
 
-
 ## PiggyPay
-This is our new Microservice. It offers the user PayPal Integration. Users can register and login to their account and see their PayPal transaction history. A user can choose to use the PiggyMetrics Authorization Service or to create a PiggyPal account, which couples PiggyMetrics with PayPal.
+This is our new Microservice. It offers the user the ability to "Connect with Paypal". A user can choose to use the usual Account or to couple PiggyMetrics with PayPal.
 
 TODO
 
@@ -38,34 +37,30 @@ PUT     | /piggypal-listens   | Set Paypal Authorization code   | |
 DELETE  | /piggypal-listens   | Returns current Authorization and erases confidential Information | |
 
 #### Notes
-Our Microservice will communicate with the Statistics Service and the Account Service to integrate Paypal support.
+A planned feature is to be able to see one's own PayPal account balance and have the transaction history taken into account when calculating statistics.
 
 ## Security
 
-An advanced security configuration is beyond the scope of this proof-of-concept project.
+Communication with PayPal is secured via OAuth2 communication.
+An advanced security configuration for the services running inside PiggyPal is beyond the scope of this proof-of-concept project.
 
 ## Infrastructure automation
 
-Deploying microservices, with their interdependence, is much more complex process than deploying monolithic application. It is important to have fully automated infrastructure. We can achieve following benefits with Continuous Delivery approach:
-
-- The ability to release software anytime
-- Any build could end up being a release
-- Build artifacts once - deploy as needed
-
-Here is a simple Continuous Delivery workflow, implemented in this project:
+The PiggyPal CI/CDE Pipeline looks as follows:
 
 TODO
 
-In this [configuration](https://github.com/bajo1207/piggymetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push. So, there are always `latest` image for each microservice on TODO and older images, tagged with TODO. It's easy to deploy any of them and quickly rollback, if needed.
+In this [configuration](https://github.com/bajo1207/piggymetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push to the master branch. So, there are always `latest` images for each microservice on TODO and older images, tagged with TODO. It's easy to deploy any of them and quickly rollback, if needed.
 
 ## How to run all the things?
 
-Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDB instances, 1 Python application and RabbitMq. Make sure you have `4 Gb` RAM available on your machine. You can always run just vital services though: Gateway, Registry, Config, Auth Service, Account Service and PiggyPal.
+Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDB instances, 3 CherryPy applications and RabbitMq. Make sure you have `4.5 Gb` RAM available on your machine. You can always run just vital services though: Gateway, Registry, Config, Auth Service, Account Service and PiggyPal.
 
 #### Before you start
 - Install Docker and Docker Compose.
-- Change environment variable values in `.env` file for more security or leave it as it is.
-- Make sure to build the project: `mvn package [-DskipTests]`
+- Change environment variable values in `.env` file for more security or leave it as it is (only applies to pure Piggymetrics).
+- Make sure to build the Piggymetrics project firs: `mvn package [-DskipTests]`
+- PiggyPal runs on Python. You don't need to compile it.
 
 #### Production mode
 In this mode, all latest images will be pulled from Docker Hub.
@@ -85,7 +80,16 @@ If you'd like to start applications in Intellij Idea you need to either use [Env
 - http://localhost:15672 - RabbitMq management (default login/password: guest/guest)
 
 #### Piggypal User Workflow
-  TODO
+Piggypal is still unfinished. Thus you will run into some caveats if you try to use it as-is. Let's go through a request life-cycle so you know where your manual aid is needed:
+1. Go through ["Before you start"](#before-you-start) and launch the services in [Production Mode](#production-mode) (as Development Mode is currently not supported by Piggypal)
+2. Once all is running you can call <http://localhost:4710/>.  
+There you will see the blue "Connect with Paypal" pill.  
+(Including this button in the view is currently challenging, see [this issue](https://github.com/bajo1207/piggymetrics/issues/5), thus you have to take following workaround)  
+3. With a click on the Paypal-Button you will be taken to a (sandboxed) login page. Please use credentials from your Sandbox/Paypal-Developer accounts. Although no credentials are currently saved, just keep your true accounts save :-)
+4. When running Paypal locally (with no externally reachable port) the specified Paypal returnURL will point to a dead-end.  
+After a short time of waiting, your browser will return with an error. Now you are interested in the address bar which should state:  
+```https://devtools-paypal.com/?code=<your Paypal authorization code>&scope=openid```
+5. TODO
 
 #### Notes
 All Spring Boot applications require already running [Config Server](https://github.com/sqshq/PiggyMetrics#config-service) for startup. But we can start all containers simultaneously because of `depends_on` docker-compose option.

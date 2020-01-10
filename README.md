@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/bajo1207/piggymetrics.svg?branch=master)](https://travis-ci.org/bajo1207/piggymetrics)
-[![codecov.io](https://codecov.io/github/sqshq/PiggyMetrics/coverage.svg?branch=master)](https://codecov.io/github/sqshq/PiggyMetrics?branch=master)
 ![GitHub issues](https://img.shields.io/github/issues/bajo1207/piggymetrics)
 ![GitHub repo size](https://img.shields.io/github/repo-size/bajo1207/piggymetrics)
 [![Chat with us on Discord](https://img.shields.io/static/v1?label=&%20us&message=Chat%20with%20us%20on%20Discord&logo=discord&color=gray)](https://discord.gg/8PNmJeS)
@@ -31,8 +30,15 @@ This is our new Microservice. It offers the user PayPal Integration. Users can r
 
 TODO
 
+Method	| Path	| Description	| User authenticated	| Available from UI
+------------- | ------------------------- | ------------- |:-------------:|:----------------:|
+GET     | /                   | Get Paypal Login Button         | |
+GET     | /piggypal           | Get Paypal Transaction History  | |
+PUT     | /piggypal-listens   | Set Paypal Authorization code   | |
+DELETE  | /piggypal-listens   | Returns current Authorization and erases confidential Information | |
+
 #### Notes
-Our Microservice will communicate with the Statistics SService and the Account Service to integrate Paypal support.
+Our Microservice will communicate with the Statistics Service and the Account Service to integrate Paypal support.
 
 ## Security
 
@@ -77,6 +83,9 @@ If you'd like to start applications in Intellij Idea you need to either use [Env
 - http://localhost:8761 - Eureka Dashboard
 - http://localhost:9000/hystrix - Hystrix Dashboard (Turbine stream link: `http://turbine-stream-service:8080/turbine/turbine.stream`)
 - http://localhost:15672 - RabbitMq management (default login/password: guest/guest)
+
+#### Piggypal User Workflow
+  TODO
 
 #### Notes
 All Spring Boot applications require already running [Config Server](https://github.com/sqshq/PiggyMetrics#config-service) for startup. But we can start all containers simultaneously because of `depends_on` docker-compose option.

@@ -1,9 +1,8 @@
 import cherrypy
-from utils import get_project_root
+from utils import SRC_DIR
 
 
 class Login_button(object):
     @cherrypy.expose
     def index(self):
-        src = get_project_root()
-        return open(src + "/main/Views/login.html")
+        return open(SRC_DIR + "/main/Views/login.html")

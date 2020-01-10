@@ -17,12 +17,6 @@ def run_server():
     cherrypy.engine.exit()
 
 
-@staticmethod
-def _setup():
-    cherrypy.tree.mount(lb(), "/", "")
-    cherrypy.config.update('Configs/Server.conf')
-
-
 class ViewIntegrationTests(helper.CPWebCase):
     """
     Contains Tests for View

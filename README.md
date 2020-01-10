@@ -28,6 +28,7 @@ Stores users contact information and notification settings (like remind and back
 ## PiggyPay
 This is our new Microservice. It offers the user PayPal Integration. Users can register and login to their account and see their PayPal transaction history. A user can choose to use the PiggyMetrics Authorization Service or to create a PiggyPal account, which couples PiggyMetrics with PayPal.
 
+http://piggymetricsdocs.s3-website-us-east-1.amazonaws.com
 TODO
 
 Method	| Path	| Description	| User authenticated	| Available from UI

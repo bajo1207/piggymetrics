@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>main.Models.Paypal_api_stub API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>main.Models.Paypal_api_stub</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import cherrypy, requests, re
+from oauthlib.oauth2 import BackendApplicationClient
+from requests_oauthlib import OAuth2Session
+from requests.auth import HTTPBasicAuth
+import datetime
+
+#Fixed Sandbox variables -&gt; have to be separately obtained by live application for each user
+sandbox_client_id = &#34;AcMTMpvdMv1KMcweEIO_-KXrs4Y7AkHduqkf6r6u_e6-juZ1ZUxiP3QZIGp99zWba09_2AcihuENUgAR&#34;
+sandbox_transaction_url = &#34;https://api.sandbox.paypal.com/v1/reporting/transactions&#34;
+sandbox_token_url = &#34;https://api.sandbox.paypal.com/v1/oauth2/token&#34;
+sandbox_client_secret = &#34;EIJGGRdItg83VE3mh0FIJ-9mR_Jd7ak4adK29VlZ4ygVETofhfr1PGG6afutUyoUj2rS7D6m69_gBrGG&#34;
+
+#Internet Date/Time Format
+dt_pattern = re.compile(&#34;^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])[T,t]([0-1][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)([.][0-9]+)?([Zz]|[+-][0-9]{2}:[0-9]{2})$&#34;)
+
+@cherrypy.expose
+class Paypal_cred_listener(object):
+    &#34;&#34;&#34;
+    Listens for Credentials being transmitted after successful &#34;connect w/ paypal&#34;
+    &#34;&#34;&#34;
+
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.accept(media=&#39;text/plain&#39;)
+    def GET(self, code:str, scope:str, **kwargs:{str}):
+        &#34;&#34;&#34;
+        Receives the authorization code and the scope provided by the Paypal ReturnURL functionality from the &#34;connect with paypal&#34;-workflow
+        &#34;&#34;&#34;
+        self._auth_code = code
+
+    @cherrypy.tools.accept(media=&#39;text/plain&#39;)
+    def DELETE(self):
+        &#34;&#34;&#34;
+        Returns the current Authorization code and erases confidential info from local variables there-after
+        &#34;&#34;&#34;
+        _auth_code = self._auth_code
+        del self._auth_code
+        return _auth_code
+
+
+@cherrypy.expose
+class Paypal_stub(object):
+    &#34;&#34;&#34;
+    A stub class to communicate with the PayPal OAuth2 API as if it was a simple non-remote RESTful database
+    &#34;&#34;&#34;
+
+    #This stub is easily expandable for whatever OAuth service is desired. For now Paypal is hardcoded.
+    transaction_url = sandbox_transaction_url # TODO: change this class var once app goes live
+
+    def __init__(self):
+        self._token = {
+            &#34;access_token&#34;: &#34;&#34;,
+            &#34;refresh_token&#34;: &#34;&#34;,
+            &#34;token_type&#34;: &#34;Bearer&#34;,
+            &#34;expires_in&#34;: &#34;-30&#34;
+        }
+        self.token_url = sandbox_token_url
+        self._extra_info = {&#34;Authorization&#34;: &#34;&#34;}
+        self._client_id = sandbox_client_id # TODO: change when going live
+        self._client_secret = sandbox_client_secret # TODO: see above
+        
+    def _token_saver(self, token):
+        self._token = token
+
+    def getAuthorization(self) -&gt; str:
+        &#34;&#34;&#34;
+        Returns User Authorization from Piggypal Credential Listener
+        
+        CAUTION: Due to privacy enhancements authorization can only be called ONCE per Session!
+        &#34;&#34;&#34;
+        auth_code = requests.delete(&#34;http://localhost:4710/piggypal-listens&#34;)
+        auth_code.raise_for_status()
+        auth = HTTPBasicAuth(self._client_id, self._client_secret)
+        client = BackendApplicationClient(client_id=self._client_id)
+        oauth = OAuth2Session(client=client)
+        return oauth.fetch_token(token_url=self.token_url, auth=auth, kwargs={&#34;code&#34;: auth_code})
+ 
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
+    @cherrypy.tools.accept(media=&#39;text/plain&#39;)
+    def GET(self, start_date:&#39;Internet Date/Time Format&#39;=None, end_date:&#39;Internet Date/Time Format&#39;=None, **request_kwargs:dict) -&gt; dict:
+        &#34;&#34;&#34;
+        Fetches Transaction History or Current Account Balance from PayPal API via OAuth2 communication
+
+        - `start_date` and `end_date` should be provided in Internet Date/Time Format (https://tools.ietf.org/html/rfc3339#section-5.6)
+        - if no dates are provided, the request will automatically be redirected to https://api.sandbox.paypal.com/v2/wallet/balance-accounts to fetch the current account balance.
+        - Fine-tuning in requests can be done via options specified in https://developer.paypal.com/docs/api/sync/v1/.
+        &#34;&#34;&#34;
+
+        transaction_url = self.transaction_url
+        if not (start_date and end_date):
+            transaction_url = &#34;https://api.sandbox.paypal.com/v2/wallet/balance-accounts&#34;
+        elif not (dt_pattern.match(start_date) and dt_pattern.match(end_date)):
+            raise ValueError(&#34;start_date or end_date are not in the right format.&#34;)
+
+        if not self._token[&#34;access_token&#34;]:
+            self._token = self.getAuthorization()
+
+        client = OAuth2Session(
+            client_id=self._client_id,
+            token=self._token,
+            auto_refresh_url=self.token_url,
+            auto_refresh_kwargs=self._extra_info,
+            token_updater=self._token_saver
+        )
+        
+        response = client.get(transaction_url, params={&#34;start_date&#34;:start_date, &#34;end_date&#34;:end_date, **request_kwargs})
+        return response.json()    
+
+if __name__ == &#39;__main__&#39;: # pragma: no cover
+    cherrypy.tree.mount(Paypal_stub(), &#39;/piggypal&#39;, &#39;Configs/piggypal.conf&#39;)
+    cherrypy.tree.mount(Paypal_cred_listener(), &#39;/piggypal-listens&#39;, &#39;Configs/piggypal.conf&#39;)
+    cherrypy.config.update(&#39;Configs/Server.conf&#39;)
+    cherrypy.engine.start()
+    #possible testing-request: curl -v -X GET &#34;http://127.0.0.1:4710/piggypal?start_date=2019-12-01t00:00:01.0%2B00:00&amp;end_date=2019-12-24t00:00:01.0-23:00&#34;
+    # or omit the dates and get the current balance
+    #Do not forget to inject the authorization code into piggypal-listens before you trigger /piggypal</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="main.Models.Paypal_api_stub.Paypal_cred_listener"><code class="flex name class">
+<span>class <span class="ident">Paypal_cred_listener</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Listens for Credentials being transmitted after successful "connect w/ paypal"</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Paypal_cred_listener(object):
+    &#34;&#34;&#34;
+    Listens for Credentials being transmitted after successful &#34;connect w/ paypal&#34;
+    &#34;&#34;&#34;
+
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.accept(media=&#39;text/plain&#39;)
+    def GET(self, code:str, scope:str, **kwargs:{str}):
+        &#34;&#34;&#34;
+        Receives the authorization code and the scope provided by the Paypal ReturnURL functionality from the &#34;connect with paypal&#34;-workflow
+        &#34;&#34;&#34;
+        self._auth_code = code
+
+    @cherrypy.tools.accept(media=&#39;text/plain&#39;)
+    def DELETE(self):
+        &#34;&#34;&#34;
+        Returns the current Authorization code and erases confidential info from local variables there-after
+        &#34;&#34;&#34;
+        _auth_code = self._auth_code
+        del self._auth_code
+        return _auth_code</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="main.Models.Paypal_api_stub.Paypal_cred_listener.exposed"><code class="name">var <span class="ident">exposed</span></code></dt>
+<dd>
+<section class="desc"><p>bool(x) -&gt; bool</p>
+<p>Returns True when the argument x is true, False otherwise.
+The builtins True and False are the only two instances of the class bool.
+The class bool is a subclass of the class int, and cannot be subclassed.</p></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="main.Models.Paypal_api_stub.Paypal_cred_listener.DELETE"><code class="name flex">
+<span>def <span class="ident">DELETE</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns the current Authorization code and erases confidential info from local variables there-after</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@cherrypy.tools.accept(media=&#39;text/plain&#39;)
+def DELETE(self):
+    &#34;&#34;&#34;
+    Returns the current Authorization code and erases confidential info from local variables there-after
+    &#34;&#34;&#34;
+    _auth_code = self._auth_code
+    del self._auth_code
+    return _auth_code</code></pre>
+</details>
+</dd>
+<dt id="main.Models.Paypal_api_stub.Paypal_cred_listener.GET"><code class="name flex">
+<span>def <span class="ident">GET</span></span>(<span>self, code, scope, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Receives the authorization code and the scope provided by the Paypal ReturnURL functionality from the "connect with paypal"-workflow</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@cherrypy.tools.json_in()
+@cherrypy.tools.accept(media=&#39;text/plain&#39;)
+def GET(self, code:str, scope:str, **kwargs:{str}):
+    &#34;&#34;&#34;
+    Receives the authorization code and the scope provided by the Paypal ReturnURL functionality from the &#34;connect with paypal&#34;-workflow
+    &#34;&#34;&#34;
+    self._auth_code = code</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="main.Models.Paypal_api_stub.Paypal_stub"><code class="flex name class">
+<span>class <span class="ident">Paypal_stub</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>A stub class to communicate with the PayPal OAuth2 API as if it was a simple non-remote RESTful database</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Paypal_stub(object):
+    &#34;&#34;&#34;
+    A stub class to communicate with the PayPal OAuth2 API as if it was a simple non-remote RESTful database
+    &#34;&#34;&#34;
+
+    #This stub is easily expandable for whatever OAuth service is desired. For now Paypal is hardcoded.
+    transaction_url = sandbox_transaction_url # TODO: change this class var once app goes live
+
+    def __init__(self):
+        self._token = {
+            &#34;access_token&#34;: &#34;&#34;,
+            &#34;refresh_token&#34;: &#34;&#34;,
+            &#34;token_type&#34;: &#34;Bearer&#34;,
+            &#34;expires_in&#34;: &#34;-30&#34;
+        }
+        self.token_url = sandbox_token_url
+        self._extra_info = {&#34;Authorization&#34;: &#34;&#34;}
+        self._client_id = sandbox_client_id # TODO: change when going live
+        self._client_secret = sandbox_client_secret # TODO: see above
+        
+    def _token_saver(self, token):
+        self._token = token
+
+    def getAuthorization(self) -&gt; str:
+        &#34;&#34;&#34;
+        Returns User Authorization from Piggypal Credential Listener
+        
+        CAUTION: Due to privacy enhancements authorization can only be called ONCE per Session!
+        &#34;&#34;&#34;
+        auth_code = requests.delete(&#34;http://localhost:4710/piggypal-listens&#34;)
+        auth_code.raise_for_status()
+        auth = HTTPBasicAuth(self._client_id, self._client_secret)
+        client = BackendApplicationClient(client_id=self._client_id)
+        oauth = OAuth2Session(client=client)
+        return oauth.fetch_token(token_url=self.token_url, auth=auth, kwargs={&#34;code&#34;: auth_code})
+ 
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
+    @cherrypy.tools.accept(media=&#39;text/plain&#39;)
+    def GET(self, start_date:&#39;Internet Date/Time Format&#39;=None, end_date:&#39;Internet Date/Time Format&#39;=None, **request_kwargs:dict) -&gt; dict:
+        &#34;&#34;&#34;
+        Fetches Transaction History or Current Account Balance from PayPal API via OAuth2 communication
+
+        - `start_date` and `end_date` should be provided in Internet Date/Time Format (https://tools.ietf.org/html/rfc3339#section-5.6)
+        - if no dates are provided, the request will automatically be redirected to https://api.sandbox.paypal.com/v2/wallet/balance-accounts to fetch the current account balance.
+        - Fine-tuning in requests can be done via options specified in https://developer.paypal.com/docs/api/sync/v1/.
+        &#34;&#34;&#34;
+
+        transaction_url = self.transaction_url
+        if not (start_date and end_date):
+            transaction_url = &#34;https://api.sandbox.paypal.com/v2/wallet/balance-accounts&#34;
+        elif not (dt_pattern.match(start_date) and dt_pattern.match(end_date)):
+            raise ValueError(&#34;start_date or end_date are not in the right format.&#34;)
+
+        if not self._token[&#34;access_token&#34;]:
+            self._token = self.getAuthorization()
+
+        client = OAuth2Session(
+            client_id=self._client_id,
+            token=self._token,
+            auto_refresh_url=self.token_url,
+            auto_refresh_kwargs=self._extra_info,
+            token_updater=self._token_saver
+        )
+        
+        response = client.get(transaction_url, params={&#34;start_date&#34;:start_date, &#34;end_date&#34;:end_date, **request_kwargs})
+        return response.json()    </code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="main.Models.Paypal_api_stub.Paypal_stub.exposed"><code class="name">var <span class="ident">exposed</span></code></dt>
+<dd>
+<section class="desc"><p>bool(x) -&gt; bool</p>
+<p>Returns True when the argument x is true, False otherwise.
+The builtins True and False are the only two instances of the class bool.
+The class bool is a subclass of the class int, and cannot be subclassed.</p></section>
+</dd>
+<dt id="main.Models.Paypal_api_stub.Paypal_stub.transaction_url"><code class="name">var <span class="ident">transaction_url</span></code></dt>
+<dd>
+<section class="desc"><p>str(object='') -&gt; str
+str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p>
+<p>Create a new string object from the given object. If encoding or
+errors is specified, then the object must expose a data buffer
+that will be decoded using the given encoding and error handler.
+Otherwise, returns the result of object.<strong>str</strong>() (if defined)
+or repr(object).
+encoding defaults to sys.getdefaultencoding().
+errors defaults to 'strict'.</p></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="main.Models.Paypal_api_stub.Paypal_stub.GET"><code class="name flex">
+<span>def <span class="ident">GET</span></span>(<span>self, start_date=None, end_date=None, **request_kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Fetches Transaction History or Current Account Balance from PayPal API via OAuth2 communication</p>
+<ul>
+<li><code>start_date</code> and <code>end_date</code> should be provided in Internet Date/Time Format (<a href="https://tools.ietf.org/html/rfc3339#section-5.6">https://tools.ietf.org/html/rfc3339#section-5.6</a>)</li>
+<li>if no dates are provided, the request will automatically be redirected to <a href="https://api.sandbox.paypal.com/v2/wallet/balance-accounts">https://api.sandbox.paypal.com/v2/wallet/balance-accounts</a> to fetch the current account balance.</li>
+<li>Fine-tuning in requests can be done via options specified in <a href="https://developer.paypal.com/docs/api/sync/v1/.">https://developer.paypal.com/docs/api/sync/v1/.</a></li>
+</ul></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@cherrypy.tools.json_in()
+@cherrypy.tools.json_out()
+@cherrypy.tools.accept(media=&#39;text/plain&#39;)
+def GET(self, start_date:&#39;Internet Date/Time Format&#39;=None, end_date:&#39;Internet Date/Time Format&#39;=None, **request_kwargs:dict) -&gt; dict:
+    &#34;&#34;&#34;
+    Fetches Transaction History or Current Account Balance from PayPal API via OAuth2 communication
+
+    - `start_date` and `end_date` should be provided in Internet Date/Time Format (https://tools.ietf.org/html/rfc3339#section-5.6)
+    - if no dates are provided, the request will automatically be redirected to https://api.sandbox.paypal.com/v2/wallet/balance-accounts to fetch the current account balance.
+    - Fine-tuning in requests can be done via options specified in https://developer.paypal.com/docs/api/sync/v1/.
+    &#34;&#34;&#34;
+
+    transaction_url = self.transaction_url
+    if not (start_date and end_date):
+        transaction_url = &#34;https://api.sandbox.paypal.com/v2/wallet/balance-accounts&#34;
+    elif not (dt_pattern.match(start_date) and dt_pattern.match(end_date)):
+        raise ValueError(&#34;start_date or end_date are not in the right format.&#34;)
+
+    if not self._token[&#34;access_token&#34;]:
+        self._token = self.getAuthorization()
+
+    client = OAuth2Session(
+        client_id=self._client_id,
+        token=self._token,
+        auto_refresh_url=self.token_url,
+        auto_refresh_kwargs=self._extra_info,
+        token_updater=self._token_saver
+    )
+    
+    response = client.get(transaction_url, params={&#34;start_date&#34;:start_date, &#34;end_date&#34;:end_date, **request_kwargs})
+    return response.json()    </code></pre>
+</details>
+</dd>
+<dt id="main.Models.Paypal_api_stub.Paypal_stub.getAuthorization"><code class="name flex">
+<span>def <span class="ident">getAuthorization</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns User Authorization from Piggypal Credential Listener</p>
+<p>CAUTION: Due to privacy enhancements authorization can only be called ONCE per Session!</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getAuthorization(self) -&gt; str:
+    &#34;&#34;&#34;
+    Returns User Authorization from Piggypal Credential Listener
+    
+    CAUTION: Due to privacy enhancements authorization can only be called ONCE per Session!
+    &#34;&#34;&#34;
+    auth_code = requests.delete(&#34;http://localhost:4710/piggypal-listens&#34;)
+    auth_code.raise_for_status()
+    auth = HTTPBasicAuth(self._client_id, self._client_secret)
+    client = BackendApplicationClient(client_id=self._client_id)
+    oauth = OAuth2Session(client=client)
+    return oauth.fetch_token(token_url=self.token_url, auth=auth, kwargs={&#34;code&#34;: auth_code})</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="main.Models" href="index.html">main.Models</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="main.Models.Paypal_api_stub.Paypal_cred_listener" href="#main.Models.Paypal_api_stub.Paypal_cred_listener">Paypal_cred_listener</a></code></h4>
+<ul class="">
+<li><code><a title="main.Models.Paypal_api_stub.Paypal_cred_listener.DELETE" href="#main.Models.Paypal_api_stub.Paypal_cred_listener.DELETE">DELETE</a></code></li>
+<li><code><a title="main.Models.Paypal_api_stub.Paypal_cred_listener.GET" href="#main.Models.Paypal_api_stub.Paypal_cred_listener.GET">GET</a></code></li>
+<li><code><a title="main.Models.Paypal_api_stub.Paypal_cred_listener.exposed" href="#main.Models.Paypal_api_stub.Paypal_cred_listener.exposed">exposed</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="main.Models.Paypal_api_stub.Paypal_stub" href="#main.Models.Paypal_api_stub.Paypal_stub">Paypal_stub</a></code></h4>
+<ul class="">
+<li><code><a title="main.Models.Paypal_api_stub.Paypal_stub.GET" href="#main.Models.Paypal_api_stub.Paypal_stub.GET">GET</a></code></li>
+<li><code><a title="main.Models.Paypal_api_stub.Paypal_stub.exposed" href="#main.Models.Paypal_api_stub.Paypal_stub.exposed">exposed</a></code></li>
+<li><code><a title="main.Models.Paypal_api_stub.Paypal_stub.getAuthorization" href="#main.Models.Paypal_api_stub.Paypal_stub.getAuthorization">getAuthorization</a></code></li>
+<li><code><a title="main.Models.Paypal_api_stub.Paypal_stub.transaction_url" href="#main.Models.Paypal_api_stub.Paypal_stub.transaction_url">transaction_url</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

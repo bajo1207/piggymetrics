@@ -5,6 +5,12 @@ from Models.Paypal_api_stub import Paypal_stub, Paypal_cred_listener
 
 
 def start_server():
+    """
+    Starts the services:
+        - Index (/)
+        - Paypal_stub (/piggypal)
+        - Paypal_cred_listener (/piggypal-listens)
+    """
     cherrypy.tree.mount(Login_button(), '/', '')
     cherrypy.tree.mount(Paypal_stub(), '/piggypal', 'Configs/piggypal.conf')
     cherrypy.tree.mount(Paypal_cred_listener(), '/piggypal-listens', 'Configs/piggypal.conf')

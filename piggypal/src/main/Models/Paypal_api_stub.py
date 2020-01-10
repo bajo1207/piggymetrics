@@ -17,7 +17,6 @@ class Paypal_cred_listener(object):
     """
     Listens for Credentials being transmitted after successful "connect w/ paypal"
     """
-
     @cherrypy.tools.json_in()
     @cherrypy.tools.accept(media='text/plain')
     def PUT(self, code, scope, **kwargs):

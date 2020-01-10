@@ -20,7 +20,7 @@ class Paypal_cred_listener(object):
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.accept(media='text/plain')
-    def GET(self, code, scope, **kwargs):
+    def PUT(self, code, scope, **kwargs):
         self._auth_code = code
 
     @cherrypy.tools.accept(media='text/plain')

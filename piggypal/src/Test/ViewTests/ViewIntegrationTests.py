@@ -1,8 +1,12 @@
-import cherrypy, sys, os, requests
+import os
+import cherrypy
+import requests
 from cherrypy.test import helper
 from contextlib import contextmanager
 from main.Views.Login_button import Login_button as lb
+from utils import SRC_DIR
 
+conf = os.path.join(os.path.join(os.path.join(SRC_DIR, "main"), "Configs"), "Server.conf")
 
 @contextmanager
 def run_server():
@@ -10,7 +14,7 @@ def run_server():
     Starts cherrypy engine to run tests in proper environment
     """
     cherrypy.config.update({'global': {'server.socket_host': "127.0.0.1", 'server.socket_port': 4710}})
-    cherrypy.tree.mount(lb(), "/", "")
+    cherrypy.tree.mount(lb(), "/", conf)
     cherrypy.engine.start()
     cherrypy.engine.wait(cherrypy.engine.states.STARTED)
     yield
@@ -29,7 +33,6 @@ class ViewIntegrationTests(helper.CPWebCase):
         with run_server():
             url = "http://127.0.0.1:4710/"
             r = requests.get(url)
-            print(r.status_code)
             self.assertEqual(r.status_code, 200)
 
     def test_button(self):
@@ -39,7 +42,6 @@ class ViewIntegrationTests(helper.CPWebCase):
         url = "http://127.0.0.1:4710/"
         with run_server():
             r = requests.get(url)
-            print(r.content)
             #"PiggyPal Button.html" contains working HTML sourcecode bofore script execution
             f = open("PiggyPal Button.html", "r")
             html = r.text

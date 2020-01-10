@@ -5,10 +5,10 @@ from src.main.Views.Login_button import Login_button as lb
 
 
 @contextmanager
-"""
-Starts cherrypy engine to run tests in proper environment
-"""
 def run_server():
+    """
+    Starts cherrypy engine to run tests in proper environment
+    """
     cherrypy.config.update({'global': {'server.socket_host': "127.0.0.1", 'server.socket_port': 4710}})
     cherrypy.tree.mount(lb(), "/", "")
     cherrypy.engine.start()

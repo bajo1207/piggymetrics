@@ -46,7 +46,7 @@ class ViewIntegrationTests(helper.CPWebCase):
         with run_server():
             r = requests.get(url)
             print(r.content)
-            #"PiggyPal Button.html" contains HTML sourcecode extracted from Browser with activ NoScript 
+            #"PiggyPal Button.html" contains working HTML sourcecode bofore script execution
             f = open("PiggyPal Button.html", "r")
             html = r.text
             content = f.read()

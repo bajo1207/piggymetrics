@@ -1,6 +1,6 @@
 import os
 
-
+@PendingDeprecationWarning
 def get_project_root():
     """
     Returns project src folder

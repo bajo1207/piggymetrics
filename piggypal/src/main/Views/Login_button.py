@@ -1,5 +1,5 @@
 import cherrypy
-from src.utils import get_project_root
+from utils import get_project_root
 
 
 class Login_button(object):

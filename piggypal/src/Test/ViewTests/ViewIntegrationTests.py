@@ -1,7 +1,7 @@
 import cherrypy, sys, os, requests
 from cherrypy.test import helper
 from contextlib import contextmanager
-from src.main.Views.Login_button import Login_button as lb
+from main.Views.Login_button import Login_button as lb
 
 
 @contextmanager

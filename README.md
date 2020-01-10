@@ -34,7 +34,7 @@ Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
 GET     | /                   | Get Paypal Login Button         | |
 GET     | /piggypal           | Get Paypal Transaction History  | |
-GET     | /piggypal-listens   | | |
+PUT     | /piggypal-listens   | Set Paypal Authorization code   | |
 DELETE  | /piggypal-listens   | Returns current Authorization and erases confidential Information | |
 
 #### Notes

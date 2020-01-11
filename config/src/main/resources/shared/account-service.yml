@@ -10,7 +10,7 @@ security:
 spring:
   data:
     mongodb:
-      host: http://ip-10-0-1-199.ec2.internal
+      host: account-mongodb
       username: user
       password: ${MONGODB_PASSWORD}
       database: piggymetrics

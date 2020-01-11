@@ -1,8 +1,8 @@
 import cherrypy
-from Views.Login_button import Login_button
-from Models.Paypal_api_stub import Paypal_stub, Paypal_cred_listener
+from main.Views.Login_button import Login_button
+from main.Models.Paypal_api_stub import Paypal_stub, Paypal_cred_listener
 
-
+import os
 
 def start_server():
     """

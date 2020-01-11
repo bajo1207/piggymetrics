@@ -27,11 +27,12 @@ Stores users contact information and notification settings (like remind and back
 ## PiggyPay
 This is our new Microservice. It offers the user the ability to "Connect with Paypal". A user can choose to use the usual Account or to couple PiggyMetrics with PayPal.
 
+http://piggymetricsdocs.s3-website-us-east-1.amazonaws.com
 TODO
 
 Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
-GET     | /                   | Get Paypal Login Button         | |
+GET     | /                   | Get Paypal Login Button         | | x
 GET     | /piggypal           | Get Paypal Transaction History  | |
 PUT     | /piggypal-listens   | Set Paypal Authorization code   | |
 DELETE  | /piggypal-listens   | Returns current Authorization and erases confidential Information | |
@@ -46,24 +47,26 @@ An advanced security configuration for the services running inside PiggyPal is b
 
 ## Infrastructure automation
 
+
 The PiggyPal CI/CDE Pipeline looks as follows:
 
 TODO
 
-In this [configuration](https://github.com/bajo1207/piggymetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push to the master branch. So, there are always `latest` images for each microservice on TODO and older images, tagged with TODO. It's easy to deploy any of them and quickly rollback, if needed.
+In this [configuration](https://github.com/bajo1207/piggymetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push to the master branch. We mainly made changes to our Piggypal service during this project, so we implemented our CI to update only the Piggypal Container, if other microservices remained unchanged.
+
 
 ## How to run all the things?
 
 Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDB instances, 3 CherryPy applications and RabbitMq. Make sure you have `4.5 Gb` RAM available on your machine. You can always run just vital services though: Gateway, Registry, Config, Auth Service, Account Service and PiggyPal.
 
 #### Before you start
-- Install Docker and Docker Compose.
+- You need Docker and Docker Compose.
 - Change environment variable values in `.env` file for more security or leave it as it is (only applies to pure Piggymetrics).
 - Make sure to build the Piggymetrics project firs: `mvn package [-DskipTests]`
 - PiggyPal runs on Python. You don't need to compile it.
 
 #### Production mode
-In this mode, all latest images will be pulled from Docker Hub.
+In this mode, all latest images will be pulled from our container repository.
 Just copy `docker-compose.yml` and hit `docker-compose up`
 
 #### Development mode

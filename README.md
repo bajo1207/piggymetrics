@@ -86,22 +86,23 @@ Let's go through a request life-cycle so you know where your manual aid is neede
 2. Once all is running you can call <http://localhost:4710/>.  
 There you will see the blue "Connect with Paypal" pill.  
 (Including this button in the view is currently challenging, see [this issue](https://github.com/bajo1207/piggymetrics/issues/5), thus you have to take following workaround)  
-3. With a click on the Paypal-Button you will be taken to a (sandboxed) login page. Please use credentials from your Sandbox/Paypal-Developer accounts. Although no credentials are currently saved, just keep your true accounts save :-)
+3. With a click on the Paypal-Button you will be taken to a (sandboxed) login page.  
+Please use credentials from your Sandbox/Paypal-Developer accounts to log in.
 4. When running Paypal locally (with no externally reachable port) the specified Paypal returnURL will point to a dead-end.  
 After a short time of waiting, your browser will return with an error. Now you are interested in the address bar which should state:  
-```https://devtools-paypal.com/?code=<your Paypal authorization code>&scope=openid```
+`https://devtools-paypal.com/?code=<your Paypal authorization code>&scope=openid`
 5. Remember your piggypal-service is running?  
-you can now inject your auth code into piggpal-listens, e.g. via:  
-```curl -vX PUT "http://localhost:4710/piggypal-listens?code=<your Paypal authorization code>&scope=openid"```  
+You can now inject your auth code into piggpal-listens, e.g. via:  
+`curl -vX PUT "http://localhost:4710/piggypal-listens?code=<your Paypal authorization code>&scope=openid"`  
 Just replace `<your Paypal authorization code>` with your received auth-code.
 6. Now you can do as many GET requests to the Paypal API which handles the transaction history through PiggyPal as you like. Just always provide a start- and end-date in Internet Date/Time format.  
 You can look for more accepted arguments on the [Paypal Sync API Site](https://developer.paypal.com/docs/api/sync/v1/).  
 A sample request might be:  
-```curl -v "http://127.0.0.1:4710/piggypal?start_date=2019-12-01t00:00:01.0%2B00:00&end_date=2019-12-24t00:00:01.0-23:00"```  
-(This returns all the great stuff `(╯°□°）╯︵ ┻━┻` your sample account had to endure during christmas preparation time.)
+`curl -v "http://127.0.0.1:4710/piggypal?start_date=2019-12-01t00:00:01.0%2B00:00&end_date=2019-12-24t00:00:01.0-23:00"`  
+(This returns all the great stuff (╯°□°）╯︵ ┻━┻ your sample account had to endure during christmas preparation time.)
 7. The returned JSON is parsable and can be manually `PUT` into the [piggymetrics account service](https://github.com/sqshq/piggymetrics#account-service) of your account. (This will hopefully work automatically in the future...)  
 This way piggymetrics can calculate statistics based on your paypal transaction history.  
-(Helping you to fix `┬─┬ ノ( ゜-゜ノ)` what you have lost in the most expensive time of the year)
+(Helping you to fix ┬─┬ ノ( ゜-゜ノ) what you have lost in the most expensive time of the year)
 8. If you are tired of manually injecting your details you are welcome help us develop these features...
 
 #### Notes

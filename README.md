@@ -50,7 +50,7 @@ An advanced security configuration for the services running inside PiggyPal is b
 
 The PiggyPal CI/CDE Pipeline looks as follows:
 
-TODO
+![](PiggyPipeline.pdf)
 
 In this [configuration](https://github.com/bajo1207/piggymetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push to the master branch. We mainly made changes to our Piggypal service during this project, so we implemented our CI to update only the Piggypal Container, if other microservices remained unchanged.
 

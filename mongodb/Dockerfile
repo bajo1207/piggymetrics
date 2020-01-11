@@ -12,4 +12,6 @@ RUN \
  rm -rf /var/cache/* && rm -rf /var/lib/apt/lists/* && \
  dos2unix -n /init.sh /initx.sh && chmod +x /initx.sh
 
+
+
 ENTRYPOINT ["/initx.sh"]

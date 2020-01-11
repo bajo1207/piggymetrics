@@ -28,7 +28,7 @@ backup:
 spring:
   data:
     mongodb:
-      host: notification-mongodb
+      host: notification-mongodb.local
       username: user
       password: ${MONGODB_PASSWORD}
       database: piggymetrics

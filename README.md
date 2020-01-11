@@ -28,11 +28,12 @@ Stores users contact information and notification settings (like remind and back
 ## PiggyPay
 This is our new Microservice. It offers the user PayPal Integration. Users can register and login to their account and see their PayPal transaction history. A user can choose to use the PiggyMetrics Authorization Service or to create a PiggyPal account, which couples PiggyMetrics with PayPal.
 
+http://piggymetricsdocs.s3-website-us-east-1.amazonaws.com
 TODO
 
 Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
-GET     | /                   | Get Paypal Login Button         | |
+GET     | /                   | Get Paypal Login Button         | | x
 GET     | /piggypal           | Get Paypal Transaction History  | |
 PUT     | /piggypal-listens   | Set Paypal Authorization code   | |
 DELETE  | /piggypal-listens   | Returns current Authorization and erases confidential Information | |
@@ -46,29 +47,25 @@ An advanced security configuration is beyond the scope of this proof-of-concept 
 
 ## Infrastructure automation
 
-Deploying microservices, with their interdependence, is much more complex process than deploying monolithic application. It is important to have fully automated infrastructure. We can achieve following benefits with Continuous Delivery approach:
-
-- The ability to release software anytime
-- Any build could end up being a release
-- Build artifacts once - deploy as needed
+Deploying microservices, with their interdependence, is much more complex process than deploying monolithic application. It is important to have fully automated infrastructure.
 
 Here is a simple Continuous Delivery workflow, implemented in this project:
 
 TODO
 
-In this [configuration](https://github.com/bajo1207/piggymetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push. So, there are always `latest` image for each microservice on TODO and older images, tagged with TODO. It's easy to deploy any of them and quickly rollback, if needed.
+In this [configuration](https://github.com/bajo1207/piggymetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push to the master branch. We mainly made changes to our Piggypal service during this project, so we implemented our CI to update only the Piggypal Container, if other microservices remained unchanged.
 
 ## How to run all the things?
 
 Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDB instances, 1 Python application and RabbitMq. Make sure you have `4 Gb` RAM available on your machine. You can always run just vital services though: Gateway, Registry, Config, Auth Service, Account Service and PiggyPal.
 
 #### Before you start
-- Install Docker and Docker Compose.
+- You need Docker and Docker Compose.
 - Change environment variable values in `.env` file for more security or leave it as it is.
 - Make sure to build the project: `mvn package [-DskipTests]`
 
 #### Production mode
-In this mode, all latest images will be pulled from Docker Hub.
+In this mode, all latest images will be pulled from our container repository.
 Just copy `docker-compose.yml` and hit `docker-compose up`
 
 #### Development mode

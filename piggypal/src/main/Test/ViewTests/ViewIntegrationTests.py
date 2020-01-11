@@ -32,7 +32,7 @@ class ViewIntegrationTests(helper.CPWebCase):
 
         with run_server():
             url = "http://127.0.0.1:4710/"
-            r = requests.get(url)
+            r = requests.put(url)
             self.assertEqual(r.status_code, 200)
 
     def test_button(self):
@@ -41,7 +41,7 @@ class ViewIntegrationTests(helper.CPWebCase):
         """
         url = "http://127.0.0.1:4710/"
         with run_server():
-            r = requests.get(url)
+            r = requests.put(url)
             # "PiggyPal Button.html" contains working HTML sourcecode before script execution
             f = open("PiggyPal Button.html", "r")
             html = r.text

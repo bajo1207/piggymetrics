@@ -20,7 +20,7 @@ class Paypal_cred_listener(object):
     """
     @cherrypy.tools.json_in()
     @cherrypy.tools.accept(media='text/plain')
-    def PUT(self, code, scope, **kwargs):
+    def GET(self, code, scope, **kwargs):
         """
         Receives the authorization code and the scope provided by the Paypal ReturnURL functionality from the "connect with paypal"-workflow
         """

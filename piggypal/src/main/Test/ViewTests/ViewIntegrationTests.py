@@ -3,10 +3,10 @@ import cherrypy
 import requests
 from cherrypy.test import helper
 from contextlib import contextmanager
-from main.Views.Login_button import Login_button as lb
+from Views.Login_button import Login_button as lb
 from utils import SRC_DIR
 
-conf = os.path.join(os.path.join(os.path.join(SRC_DIR, "main"), "Configs"), "Server.conf")
+conf = os.path.join(os.path.join(SRC_DIR, "Configs"), "Server.conf")
 
 @contextmanager
 def run_server():
@@ -37,12 +37,12 @@ class ViewIntegrationTests(helper.CPWebCase):
 
     def test_button(self):
         """
-        Fails if returned object varys != Paypal Login button
+        Test for Code loss during request handling
         """
         url = "http://127.0.0.1:4710/"
         with run_server():
             r = requests.get(url)
-            #"PiggyPal Button.html" contains working HTML sourcecode bofore script execution
+            # "PiggyPal Button.html" contains working HTML sourcecode before script execution
             f = open("PiggyPal Button.html", "r")
             html = r.text
             content = f.read()

@@ -3,10 +3,10 @@ import cherrypy
 import requests
 from cherrypy.test import helper
 from contextlib import contextmanager
-from main.Models.Paypal_api_stub import Paypal_cred_listener as pcl, Paypal_stub as ps
+from Models.Paypal_api_stub import Paypal_cred_listener as pcl, Paypal_stub as ps
 from utils import SRC_DIR
 
-conf = os.path.join(os.path.join(os.path.join(SRC_DIR, "main"), "Configs"), "piggypal.conf")
+conf = os.path.join(os.path.join(SRC_DIR, "Configs"), "piggypal.conf")
 
 
 @contextmanager
@@ -62,18 +62,22 @@ class ModelUnitTests(helper.CPWebCase):
         """
         assertion_token = "TokenTest"
         stub = ps()
-        stub._tokenSaver(token=assertion_token)
+        stub._token_saver(token=assertion_token)
         self.assertEqual(stub._token, assertion_token)
 
 
 class ModelSandboxUnitTest(helper.CPWebCase):
     """
-    Contains Unit Tests for Model which can currently be only run under sandbox conditions due to Paypal Partner problems
+    Contains Unit Tests for Model
+
+    ! This Test suite only targets the Paypal Sandbox Environment.
     """
 
     def test_stub_init_sandbox(self):
         """
         Checks if Paypal Stub is properly initialized
+
+        This test uses sandbox variables for client_id and client_secret
         """
         stub = ps()
         token = {
@@ -93,19 +97,21 @@ class ModelSandboxUnitTest(helper.CPWebCase):
         # TODO: change client secret assert once live
 
 
-    def test_stub__getAuthorization(self):
+    def test_stub_getAuthorization(self):
         """
         Check if _getAuthorization returns correct token format
+
+        This test uses a sandbox variable for auth_code.
+        It is possible that the given Authentication code will expire in the near future and has to be replaced.
         """
         with run_server():
             stub = ps()
             auth_code = "C21AAFz4MLiqcHFKYwgvdPf2FGNa1YhyUVF8SegZHYf7IPSCygY6pLZFFtO3u9Bh195eHyT-UJRzmajzVjQC0629dUHe36jgA"
             requests.get("http://localhost:4710/piggypal-listens", params={"code": auth_code, "scope": "openid"})
-            token = stub._getAuthorization()
+            token = stub.getAuthorization()
             self.assertTrue("access_token" in token)
             self.assertTrue("token_type" in token)
             self.assertTrue("expires_in" in token)
-            #self.assertTrue("refresh_token" in token)
             self.assertTrue("scope" in token)
 
     def test_stub_get_incorrect_date_handling(self):
@@ -124,7 +130,8 @@ class ModelSandboxUnitTest(helper.CPWebCase):
         """
         Check if proper Date Format will be accepted
 
-        A valid auth_code is needed here. It is possible that the example auth_code will expire in the near future an has to be replaced.
+        This test uses a sandbox variable for auth_code.
+        It is possible that the given Authentication code will expire in the near future and has to be replaced.
         """
         with run_server():
             try:
@@ -139,15 +146,19 @@ class ModelSandboxUnitTest(helper.CPWebCase):
             else:
                 self.assertTrue(True)
 
+
 class ModelSandboxIntegrationTest(helper.CPWebCase):
     """
-    Contains Unit Tests for Model which can currently be only run under sandbox conditions due to Paypal Partner problems
+    Contains Integration Tests for Model
+
+    ! This Test suite only targets the Paypal Sandbox Environment.
     """
     def test_stub_get_response(self):
         """
         Check if response from Paypal contains Transaction details
 
-        A valid auth_code is needed here. It is possible that the example auth_code will expire in the near future an has to be replaced.
+        This test uses a sandbox variable for auth_code.
+        It is possible that the given Authentication code will expire in the near future and has to be replaced.
         """
         with run_server():
             auth_code = "C21AAFz4MLiqcHFKYwgvdPf2FGNa1YhyUVF8SegZHYf7IPSCygY6pLZFFtO3u9Bh195eHyT-UJRzmajzVjQC0629dUHe36jgA"

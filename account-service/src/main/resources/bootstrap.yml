@@ -3,7 +3,7 @@ spring:
     name: account-service
   cloud:
     config:
-      uri: ${CONFIG_SERVER}
+      uri: http://ip-10-0-1-199.ec2.internal:8888
       fail-fast: true
       password: ${CONFIG_SERVICE_PASSWORD}
       username: user

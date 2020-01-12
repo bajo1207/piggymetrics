@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
-if [ "$DIFFTREE" == "piggypal" ]
+if [ "$GREPPAL" == "piggypal" ]
 then
-    echo "Skipping java test"
-else
-  mvn test -B
+    echo "Starting piggypal tests"
+    pip install pytest, requests, requests-oauthlib, cherrypy, oauthlib, re, contextlib
+    cd /piggypal/src/main
+    python -m pytest
+fi
+
+if [ "$DIFFTREE" != "piggypal" ]
+then
+    echo "Starting piggymetrics tests"
+    mvn test -B
 fi

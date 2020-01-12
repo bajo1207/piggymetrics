@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-echo "Starting piggypal tests"
-cd ./piggypal/src/main
-python -m pytest
-
-
+if [ "$DIFFTREE" != "piggypal" ]
+then
+    echo "Starting piggymetrics tests"
+    mvn test -B
+fi

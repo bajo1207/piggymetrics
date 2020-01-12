@@ -25,10 +25,9 @@ Performs calculations on major statistics parameters and captures time series fo
 Stores users contact information and notification settings (like remind and backup frequency). Scheduled worker collects required information from other services and sends e-mail messages to subscribed customers.
 
 ## PiggyPay
-This is our new Microservice. It offers the user the ability to "Connect with Paypal". A user can choose to use the usual Account or to couple PiggyMetrics with PayPal.
+This is our new Microservice. It offers the user the ability to "Connect with Paypal". A user can choose to use the usual account service or to couple PiggyMetrics with PayPal. Users that use this new feature can login directly via Paypal and have access to their Paypal transaction details.
 
-http://piggymetricsdocs.s3-website-us-east-1.amazonaws.com
-TODO
+The Code Documentation for PiggyPal can be found [here](http://piggymetricsdocs.s3-website-us-east-1.amazonaws.com).
 
 Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|

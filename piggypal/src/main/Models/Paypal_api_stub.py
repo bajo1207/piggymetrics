@@ -7,6 +7,7 @@ from opencensus.trace.tracer import Tracer
 from opencensus.trace import time_event as time_event_module
 from opencensus.ext.zipkin.trace_exporter import ZipkinExporter
 from opencensus.trace.samplers import AlwaysOnSampler
+from opencensus.trace.status import Status
 
 ze = ZipkinExporter(service_name="python-quickstart",
                                 host_name='localhost',
@@ -72,7 +73,9 @@ class Paypal_stub(object):
         self._client_secret = sandbox_client_secret # TODO: see above
         
     def _token_saver(self, token):
-        self._token = token
+        with tracer.span(name="token_saver") as span:
+            span.status = Status(0, "Token refreshed.")
+            self._token = token
 
     def getAuthorization(self) -> str:
         """
@@ -80,12 +83,18 @@ class Paypal_stub(object):
         
         CAUTION: Due to privacy enhancements authorization can only be called ONCE per Session!
         """
-        auth_code = requests.delete("http://localhost:4710/piggypal-listens")
-        auth_code.raise_for_status()
-        auth = HTTPBasicAuth(self._client_id, self._client_secret)
-        client = BackendApplicationClient(client_id=self._client_id)
-        oauth = OAuth2Session(client=client)
-        return oauth.fetch_token(token_url=self.token_url, auth=auth, kwargs={"code": auth_code})
+        with tracer.span(name="get_authorization") as span:
+            auth_code = requests.delete("http://localhost:4710/piggypal-listens")
+            span.status = Status(0, "Fetched auth code")
+            try:
+                auth_code.raise_for_status()
+            except:
+                span.status = Status(15, "Auth code not retrieved correctly")
+            auth = HTTPBasicAuth(self._client_id, self._client_secret)
+            client = BackendApplicationClient(client_id=self._client_id)
+            oauth = OAuth2Session(client=client)
+            span.status = Status(0, "Fetching token from Paypal")
+            return oauth.fetch_token(token_url=self.token_url, auth=auth, kwargs={"code": auth_code})
  
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
@@ -98,41 +107,41 @@ class Paypal_stub(object):
         - if no dates are provided, the request will automatically be redirected to https://api.sandbox.paypal.com/v2/wallet/balance-accounts to fetch the current account balance.
         - Fine-tuning in requests can be done via options specified in https://developer.paypal.com/docs/api/sync/v1/.
         """
+        with token.span(name="main_get_request") as span:
+            transaction_url = self.transaction_url
+            if not (start_date and end_date):
+                span.status = Status(16, "Changing to fetching the account-balance is currently not supported.")
+                transaction_url = "https://api.sandbox.paypal.com/v2/wallet/balance-accounts"
+            elif not (dt_pattern.match(start_date) and dt_pattern.match(end_date)):
+                span.status = Status(3, "Wrong date format or missing date.")
+                raise ValueError("start_date or end_date are not in the right format.")
 
-        transaction_url = self.transaction_url
-        if not (start_date and end_date):
-            transaction_url = "https://api.sandbox.paypal.com/v2/wallet/balance-accounts"
-        elif not (dt_pattern.match(start_date) and dt_pattern.match(end_date)):
-            raise ValueError("start_date or end_date are not in the right format.")
+            if not self._token["access_token"]:
+                span.status = Status(0, "Fetchin auth token")
+                self._token = self.getAuthorization()
 
-        if not self._token["access_token"]:
-            self._token = self.getAuthorization()
-
-        client = OAuth2Session(
-            client_id=self._client_id,
-            token=self._token,
-            auto_refresh_url=self.token_url,
-            auto_refresh_kwargs=self._extra_info,
-            token_updater=self._token_saver
-        )
-        
-        response = client.get(transaction_url, params={"start_date":start_date, "end_date":end_date, **request_kwargs})
-        return response.json()    
+            try:
+                span.status = Status(0, "Attempting request with token")
+                client = OAuth2Session(
+                    client_id=self._client_id,
+                    token=self._token,
+                    auto_refresh_url=self.token_url,
+                    auto_refresh_kwargs=self._extra_info,
+                    token_updater=self._token_saver
+                )
+            except:
+                span.status = Status(2, "Something went wrong while requesting the refresh token")
+            
+            response = client.get(transaction_url, params={"start_date":start_date, "end_date":end_date, **request_kwargs})
+            return response.json()    
 
 if __name__ == '__main__': # pragma: no cover
-    with tracer.span(name="PiggyPal_main") as span:
-        try:
-            span.add_annotation("invoking doWork")
-            span.status = Status(0, "Starting Piggypal")
-            cherrypy.tree.mount(Paypal_stub(), '/piggypal', 'Configs/piggypal.conf')
-            span.status = Status(0, "Starting cred listener")
-            cherrypy.tree.mount(Paypal_cred_listener(), '/piggypal-listens', 'Configs/piggypal.conf')
-            cherrypy.config.update('Configs/Server.conf')
-            cherrypy.engine.start()
-            span.status = Status(0, "PiggyPal up.")
-            #possible testing-request: curl -v -X GET "http://127.0.0.1:4710/piggypal?start_date=2019-12-01t00:00:01.0%2B00:00&end_date=2019-12-24t00:00:01.0-23:00"
-            # or omit the dates and get the current balance
-            #Do not forget to inject the authorization code into piggypal-listens before you trigger /piggypal
-        except:
-            span.status = Status(10, "Execution failed. Aborting.")
+    cherrypy.tree.mount(Paypal_stub(), '/piggypal', 'Configs/piggypal.conf')
+    cherrypy.tree.mount(Paypal_cred_listener(), '/piggypal-listens', 'Configs/piggypal.conf')
+    cherrypy.config.update('Configs/Server.conf')
+    cherrypy.engine.start()
+    #possible testing-request: curl -v -X GET "http://127.0.0.1:4710/piggypal?start_date=2019-12-01t00:00:01.0%2B00:00&end_date=2019-12-24t00:00:01.0-23:00"
+    # or omit the dates and get the current balance
+    #Do not forget to inject the authorization code into piggypal-listens before you trigger /piggypal
+
 

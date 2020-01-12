@@ -102,7 +102,7 @@ class Paypal_stub(object):
         #prometheus setup
         mod_stats = stats_module.stats
         view_manager = mod_stats.view_manager
-        exporter = prometheus.new_stats_exporter(prometheus.Options(namespace="oc_python", port=42069))
+        exporter = prometheus.new_stats_exporter(prometheus.Options(namespace="oc_python", port="42069"))
         view_manager.register_exporter(exporter)
         view_manager.register_view(latency_view)
         
@@ -141,7 +141,7 @@ class Paypal_stub(object):
         - if no dates are provided, the request will automatically be redirected to https://api.sandbox.paypal.com/v2/wallet/balance-accounts to fetch the current account balance.
         - Fine-tuning in requests can be done via options specified in https://developer.paypal.com/docs/api/sync/v1/.
         """
-        with token.span(name="main_get_request") as span:
+        with tracer.span(name="main_get_request") as span:
             start = time.time()
             transaction_url = self.transaction_url
             if not (start_date and end_date):

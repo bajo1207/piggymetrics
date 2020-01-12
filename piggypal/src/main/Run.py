@@ -4,7 +4,6 @@ from Models.Paypal_api_stub import Paypal_stub, Paypal_cred_listener
 
 import os
 
-
 def start_server():
     """
     Starts the services:

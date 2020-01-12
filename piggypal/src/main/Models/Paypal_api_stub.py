@@ -102,7 +102,7 @@ class Paypal_stub(object):
         #prometheus setup
         mod_stats = stats_module.stats
         view_manager = mod_stats.view_manager
-        exporter = prometheus.new_stats_exporter(prometheus.Options(namespace="oc_python", port="42069"))
+        exporter = prometheus.new_stats_exporter(prometheus.Options(namespace="oc_python", port=42069))
         view_manager.register_exporter(exporter)
         view_manager.register_view(latency_view)
         

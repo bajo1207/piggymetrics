@@ -25,19 +25,19 @@ zuul:
 
     account-service:
         path: /accounts/**
-        serviceId: account-service
+        url: http://account-service.local:6000
         stripPrefix: false
         sensitiveHeaders:
 
     statistics-service:
         path: /statistics/**
-        serviceId: statistics-service
+        url: http://statistics-service.local:7000
         stripPrefix: false
         sensitiveHeaders:
 
     notification-service:
         path: /notifications/**
-        serviceId: notification-service
+        url: http://notification-service.local:5000
         stripPrefix: false
         sensitiveHeaders:
 

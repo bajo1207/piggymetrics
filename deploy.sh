@@ -7,6 +7,8 @@ export PIGGYPAL=piggymetrics-piggypal
 docker build -t $PIGGYPAL:$COMMIT ./piggypal
 docker tag $PIGGYPAL:$COMMIT $AWS_URL/$PIGGYPAL:$TAG
 docker push $AWS_URL/$PIGGYPAL
+
+aws2 codepipeline start-pipeline-execution --name PiggyPalPipe
 fi
 if [ "$DIFFTREE" != "piggypal" ]
 then

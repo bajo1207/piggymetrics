@@ -13,3 +13,5 @@ aws2 ecs update-service --service account-mongodb --desired-count 1 --cluster Pi
 aws2 ecs update-service --service auth-service --desired-count 1 --cluster PiggyCluster
 
 aws2 ecs update-service --service auth-mongodb --desired-count 1 --cluster PiggyCluster
+
+aws2 ecs update-service --service piggypal --desired-count 1 --cluster PiggyCluster

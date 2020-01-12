@@ -9,7 +9,7 @@ from opencensus.ext.zipkin.trace_exporter import ZipkinExporter
 from opencensus.trace.samplers import AlwaysOnSampler
 from opencensus.trace.status import Status
 
-ze = ZipkinExporter(service_name="python-quickstart",
+ze = ZipkinExporter(service_name="paypal-api-stub",
                                 host_name='localhost',
                                 port=9411,
                                 endpoint='/api/v2/spans')

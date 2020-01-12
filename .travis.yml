@@ -18,7 +18,7 @@ matrix:
       python:
         - 3.6
       before_install:
-        - pip3 install pytest requests requests-oauthlib cherrypy oauthlib re contextlib
+        - pip3 install pytest requests requests-oauthlib cherrypy oauthlib re2 contextlib
       script: bash test.sh
 
     - language: java

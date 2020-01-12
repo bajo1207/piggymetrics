@@ -3,24 +3,31 @@ sudo: required
 services:
   - docker
 
-language: java
-jdk: openjdk8
-
 env:
   global:
     - EB_REGION="us-east-1"
     - COMMIT=${TRAVIS_COMMIT::7}
+    - export DIFFTREE=$(git diff-tree --name-only --no-commit-id HEAD)
+    - export GREPPAL=$(git diff-tree --name-only --no-commit-id HEAD | grep piggypal)
+    - export PATH=$PATH:$HOME/.local/bin
 
-before_install:
-  - pip install --user awscli
-  - export PATH=$PATH:$HOME/.local/bin
-  - export DIFFTREE=$(git diff-tree --name-only --no-commit-id HEAD)
-  - export GREPPAL=$(git diff-tree --name-only --no-commit-id HEAD | grep piggypal)
 
-install: bash build.sh
-script: bash test.sh
+matrix:
+  include:
+    - language: python
+      python:
+        - 3.6
+      install: bash build.sh
+      script: bash test.sh
+
+    - language: java
+      jdk: openjdk8
+      install: bash build.sh
+      script: bash test.sh
+
 
 before_deploy:
+  - pip install --user awscli
   - bash <(aws configure set default.region ${EB_REGION})
   - eval $(aws ecr get-login --no-include-email)
   - export AWS_URL=${AWS_ACCOUNT_ID}.dkr.ecr.${EB_REGION}.amazonaws.com

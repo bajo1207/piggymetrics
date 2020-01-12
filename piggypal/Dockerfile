@@ -1,11 +1,14 @@
-FROM python:3
+FROM ubuntu:18.04
 
-ADD ./src/main/Run.py /
+RUN apt update -y &&\
+    apt install -y python3-pip python3-dev
 
-RUN pip install cherrypy
-RUN pip install requests requests_oauthlib
+RUN python3 -m pip install cherrypy requests requests_oauthlib
 
+COPY ./src/main /
 
-CMD ["python", "./src/main/Run.py"]
+ENTRYPOINT [ "python3" ]
+
+CMD ["./Run.py"]
 
 EXPOSE 4710

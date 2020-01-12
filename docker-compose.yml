@@ -195,3 +195,13 @@ services:
       options:
         max-size: "10m"
         max-file: "10"
+
+  zipkin:
+    image: openzipkin/zipkin
+    restart: always
+    ports:
+      - 4713:9411
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"

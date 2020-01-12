@@ -6,13 +6,13 @@ import datetime
 from opencensus.trace.tracer import Tracer
 from opencensus.trace import time_event as time_event_module
 from opencensus.ext.zipkin.trace_exporter import ZipkinExporter
-from opencensus.trace.samplers import always_on
+from opencensus.trace.samplers import AlwaysOnSampler
 
 ze = ZipkinExporter(service_name="python-quickstart",
                                 host_name='localhost',
                                 port=9411,
                                 endpoint='/api/v2/spans')
-tracer = Tracer(exporter=ze, sampler=always_on.AlwaysOnSampler())
+tracer = Tracer(exporter=ze, sampler=AlwaysOnSampler())
 
 #Fixed Sandbox variables -> have to be separately obtained by live application for each user
 sandbox_client_id = "AcMTMpvdMv1KMcweEIO_-KXrs4Y7AkHduqkf6r6u_e6-juZ1ZUxiP3QZIGp99zWba09_2AcihuENUgAR"

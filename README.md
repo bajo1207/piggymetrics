@@ -25,10 +25,9 @@ Performs calculations on major statistics parameters and captures time series fo
 Stores users contact information and notification settings (like remind and backup frequency). Scheduled worker collects required information from other services and sends e-mail messages to subscribed customers.
 
 ## PiggyPay
-This is our new Microservice. It offers the user the ability to "Connect with Paypal". A user can choose to use the usual Account or to couple PiggyMetrics with PayPal.
+This is our new Microservice. It offers the user the ability to "Connect with Paypal". A user can choose to use the usual account service or to couple PiggyMetrics with PayPal. Users that use this new feature can login directly via Paypal and have access to their Paypal transaction details.
 
-http://piggymetricsdocs.s3-website-us-east-1.amazonaws.com
-TODO
+The Code Documentation for PiggyPal can be found [here](http://piggymetricsdocs.s3-website-us-east-1.amazonaws.com).
 
 Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
@@ -92,8 +91,9 @@ There you will see the blue "Connect with Paypal" pill.
 (Including this button in the view is currently challenging, see [this issue](https://github.com/bajo1207/piggymetrics/issues/5), thus you have to take following workaround)  
 3. With a click on the Paypal-Button you will be taken to a (sandboxed) login page.  
 Please use credentials from your Sandbox/Paypal-Developer accounts to log in.
-4. When running Paypal locally (with no externally reachable port) the specified Paypal returnURL will point to a dead-end.  
-After a short time of waiting, your browser will return with an error. Now you are interested in the address bar which should state:  
+4. When running Paypal locally (with no externally reachable port) the specified Paypal returnURL is wrong.  
+Please change the returnURL in the specific [gateway file](https://github.com/bajo1207/piggymetrics/blob/master/gateway/src/main/resources/static/login.html) to a dead end.  
+After a short time of waiting, your browser will then return with an error. Now you are interested in the address bar which should state:  
 `https://devtools-paypal.com/?code=<your Paypal authorization code>&scope=openid`
 5. Remember your piggypal-service is running?  
 You can now inject your auth code into piggpal-listens, e.g. via:  

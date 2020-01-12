@@ -3,6 +3,16 @@ from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 from requests.auth import HTTPBasicAuth
 import datetime
+from opencensus.trace.tracer import Tracer
+from opencensus.trace import time_event as time_event_module
+from opencensus.ext.zipkin.trace_exporter import ZipkinExporter
+from opencensus.trace.samplers import always_on
+
+ze = ZipkinExporter(service_name="python-quickstart",
+                                host_name='localhost',
+                                port=9411,
+                                endpoint='/api/v2/spans')
+tracer = Tracer(exporter=ze, sampler=always_on.AlwaysOnSampler())
 
 #Fixed Sandbox variables -> have to be separately obtained by live application for each user
 sandbox_client_id = "AcMTMpvdMv1KMcweEIO_-KXrs4Y7AkHduqkf6r6u_e6-juZ1ZUxiP3QZIGp99zWba09_2AcihuENUgAR"
@@ -24,16 +34,20 @@ class Paypal_cred_listener(object):
         """
         Receives the authorization code and the scope provided by the Paypal ReturnURL functionality from the "connect with paypal"-workflow
         """
-        self._auth_code = code
+        with tracer.span(name="credListenerGET") as span:
+            self._auth_code = code
+            span.status = Status(0, "Assigned one-time auth code")
 
     @cherrypy.tools.accept(media='text/plain')
     def DELETE(self):
         """
         Returns the current Authorization code and erases confidential info from local variables there-after
         """
-        _auth_code = self._auth_code
-        del self._auth_code
-        return _auth_code
+        with tracer.span(name="credListenerDEL") as span:
+            _auth_code = self._auth_code
+            del self._auth_code
+            span.status = Status(0, "Called and deleted auth code.")
+            return _auth_code
 
 
 @cherrypy.expose
@@ -106,10 +120,19 @@ class Paypal_stub(object):
         return response.json()    
 
 if __name__ == '__main__': # pragma: no cover
-    cherrypy.tree.mount(Paypal_stub(), '/piggypal', 'Configs/piggypal.conf')
-    cherrypy.tree.mount(Paypal_cred_listener(), '/piggypal-listens', 'Configs/piggypal.conf')
-    cherrypy.config.update('Configs/Server.conf')
-    cherrypy.engine.start()
-    #possible testing-request: curl -v -X GET "http://127.0.0.1:4710/piggypal?start_date=2019-12-01t00:00:01.0%2B00:00&end_date=2019-12-24t00:00:01.0-23:00"
-    # or omit the dates and get the current balance
-    #Do not forget to inject the authorization code into piggypal-listens before you trigger /piggypal
+    with tracer.span(name="PiggyPal_main") as span:
+        try:
+            span.add_annotation("invoking doWork")
+            span.status = Status(0, "Starting Piggypal")
+            cherrypy.tree.mount(Paypal_stub(), '/piggypal', 'Configs/piggypal.conf')
+            span.status = Status(0, "Starting cred listener")
+            cherrypy.tree.mount(Paypal_cred_listener(), '/piggypal-listens', 'Configs/piggypal.conf')
+            cherrypy.config.update('Configs/Server.conf')
+            cherrypy.engine.start()
+            span.status = Status(0, "PiggyPal up.")
+            #possible testing-request: curl -v -X GET "http://127.0.0.1:4710/piggypal?start_date=2019-12-01t00:00:01.0%2B00:00&end_date=2019-12-24t00:00:01.0-23:00"
+            # or omit the dates and get the current balance
+            #Do not forget to inject the authorization code into piggypal-listens before you trigger /piggypal
+        except:
+            span.status = Status(10, "Execution failed. Aborting.")
+

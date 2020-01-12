@@ -91,8 +91,9 @@ There you will see the blue "Connect with Paypal" pill.
 (Including this button in the view is currently challenging, see [this issue](https://github.com/bajo1207/piggymetrics/issues/5), thus you have to take following workaround)  
 3. With a click on the Paypal-Button you will be taken to a (sandboxed) login page.  
 Please use credentials from your Sandbox/Paypal-Developer accounts to log in.
-4. When running Paypal locally (with no externally reachable port) the specified Paypal returnURL will point to a dead-end.  
-After a short time of waiting, your browser will return with an error. Now you are interested in the address bar which should state:  
+4. When running Paypal locally (with no externally reachable port) the specified Paypal returnURL is wrong.  
+Please change the returnURL in the specific [gateway file](https://github.com/bajo1207/piggymetrics/blob/master/gateway/src/main/resources/static/login.html) to a dead end.  
+After a short time of waiting, your browser will then return with an error. Now you are interested in the address bar which should state:  
 `https://devtools-paypal.com/?code=<your Paypal authorization code>&scope=openid`
 5. Remember your piggypal-service is running?  
 You can now inject your auth code into piggpal-listens, e.g. via:  
